@@ -5,35 +5,34 @@
         <table mat-table [dataSource]="dataSource" >
         <!-- Order Column -->
         <ng-container matColumnDef="order">
-          <th mat-header-cell *matHeaderCellDef>Poradie</th>
+          <th class="table-header" mat-header-cell *matHeaderCellDef>Poradie</th>
           <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
         </ng-container>
       
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Meno</th>
+          <th class="table-header" mat-header-cell *matHeaderCellDef>Meno</th>
           <td mat-cell *matCellDef="let element">{{element.name}}</td>
         </ng-container>
       
         <!-- Points Column -->
         <ng-container matColumnDef="points">
-          <th mat-header-cell *matHeaderCellDef>Body</th>
+          <th class="table-header" mat-header-cell *matHeaderCellDef>Body</th>
           <td mat-cell *matCellDef="let element">{{element.points}}</td>
         </ng-container>
       
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr  class="table-header" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr style="background-color: white;" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
 
     <div class="matches">
-
         <mat-list>
-            <ng-container *ngFor="let match of calcService.getMatches()"  >
+            <div *ngFor="let match of calcService.getMatches()" [ngClass]="{'played-matched': match.homeScore > 0}" >
                 <mat-list-item >
-                    <div class="match">
+                    <div class="match" [ngClass]="{'played-matched': match.homeScore > 0}">
                         <p>{{match.home}}</p>
-                        <p>{{match.homeScore}} : {{match.awayScore}}</p>
+                        <p>{{match.homeScore >= 0 ? match.homeScore:'-'}} : {{match.awayScore >= 0 ? match.awayScore:'-'}}</p>
                         <p>{{match.away}}</p>
                     </div>
                     
@@ -41,7 +40,7 @@
                      
                 </mat-list-item>
                 <mat-divider ></mat-divider>
-            </ng-container>
+            </div>
         </mat-list>
         
         

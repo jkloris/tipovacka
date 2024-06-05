@@ -1,0 +1,37 @@
+
+<form class="container" [formGroup]="form">
+
+    <h1>Vytvor tiket</h1>
+    <mat-form-field appearance="fill" class="long-input" >
+        <mat-label>Tvoje meno</mat-label>
+        <input matInput formControlName="yourName">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="long-input">
+        <mat-label>Celkový víťaz</mat-label>
+        <input  matInput formControlName="totalWinner">
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill" class="long-input">
+        <mat-label>Najlepší strelec</mat-label>
+        <input matInput formControlName="bestShooter">
+    </mat-form-field>
+
+    <div formGroupName="matches">
+        <div  *ngFor="let m of calcService.getMatches()" class="match" [formGroupName]="calcService.getMatchId(m)">
+
+            <mat-form-field appearance="fill">
+                <mat-label>{{m.home}}</mat-label>
+                <input type="number" matInput formControlName="home">
+            </mat-form-field>
+            VS
+            <mat-form-field appearance="fill">
+                <mat-label>{{m.away}}</mat-label>
+                <input type="number" matInput formControlName="away">
+            </mat-form-field>
+        </div>
+    </div>
+</form>
+
+<button style="margin: 1em; width: 60%;" (click)="submit()" mat-raised-button>Potvrdiť</button>

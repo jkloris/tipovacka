@@ -60,9 +60,18 @@ export class CalcService {
         matches.push(new Match(m.team1.name, m.team2.name))
       }
     }
+    matches[0].setScore(1,0)
+    matches[2].setScore(2,1)
+    matches[1].setScore(1,4)
+    matches[4].setScore(4,0)
+    matches[5].setScore(1,0)
+    matches[2].setScore(1,0)
     return matches
   }
 
+  getMatchId(match: Match){
+    return `${match.home.slice(0,4)}:${match.away.slice(0,4)}`
+  }
 
 
 }

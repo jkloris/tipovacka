@@ -1,8 +1,8 @@
 export class Match{
     home: string = ""
     away: string = ""
-    homeScore: number = 0
-    awayScore: number = 0
+    homeScore: number = -1
+    awayScore: number = -1
 
     constructor(home: string, away: string){
         this.home = home
@@ -10,6 +10,7 @@ export class Match{
     }
 
     setScore(homeScore: number, awayScore: number){
+        console.log(homeScore, awayScore)
         this.homeScore = homeScore
         this.awayScore = awayScore
     }
