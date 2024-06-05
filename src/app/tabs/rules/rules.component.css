@@ -1,0 +1,13 @@
+.content{
+    width: 80%;
+    padding: 3em;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    
+}

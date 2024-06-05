@@ -1,0 +1,57 @@
+.matches{
+    width: 40%;
+    max-height: 90vh;
+    overflow: auto;
+    min-width: 350px;
+    box-shadow: 0px 4px 8px 0px #00000094;
+    background-color: white;
+}
+
+.match{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.match p{
+    width: 45%;
+}
+.match :nth-last-child(2){
+    width: 10%;
+}
+
+mat-list-item{
+    margin: 1em 0 ;
+    text-align: center;
+}
+
+.container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+}
+
+
+
+
+.players{
+    width: 40%;
+    min-width: 350px;
+    box-shadow: 0px 4px 8px 0px #00000094;
+    margin-bottom: 2em;
+    background-color: white;
+
+}
+
+th, td{
+    text-align: center;
+}
+
+h1{
+    text-align: center;
+    color: white;
+    padding: 0.2em 0;
+    background-color: #00000094;
+
+}

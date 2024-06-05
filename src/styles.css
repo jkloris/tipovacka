@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+
+*{
+    font-family: 'Roboto', sans-serif;
+    --PrimaryColor: #0a1928;
+    --SecondaryColor: #E20A16;
+    --AccentColor: #00923F;
+    --NeutralDark: #1C1C2D;
+    --NeutralLight: #e4f4ff;
+
+    --mat-tab-header-with-background-background-color: var(--PrimaryColor);
+    --mat-tab-header-with-background-foreground-color: white
+
+
+}
+html, body { height: 100%; }
+body { 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    background-image: url('../public/euro_bg.webp');
+    background-size: cover;
+}
