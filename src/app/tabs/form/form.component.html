@@ -9,13 +9,13 @@
 
     <mat-form-field appearance="fill" class="long-input">
         <mat-label>Celkový víťaz</mat-label>
-        <input  matInput formControlName="totalWinner">
+        <input  matInput formControlName="winner1">
     </mat-form-field>
 
 
     <mat-form-field appearance="fill" class="long-input">
         <mat-label>Najlepší strelec</mat-label>
-        <input matInput formControlName="bestShooter">
+        <input matInput formControlName="topStriker">
     </mat-form-field>
 
     <div formGroupName="matches">
@@ -23,15 +23,15 @@
 
             <mat-form-field appearance="fill">
                 <mat-label>{{m.home}}</mat-label>
-                <input type="number" matInput formControlName="home">
+                <input type="number" matInput formControlName="homeScore">
             </mat-form-field>
             VS
             <mat-form-field appearance="fill">
                 <mat-label>{{m.away}}</mat-label>
-                <input type="number" matInput formControlName="away">
+                <input type="number" matInput formControlName="awayScore">
             </mat-form-field>
         </div>
     </div>
 </form>
 
-<button style="margin: 1em; width: 60%;" (click)="submit()" mat-raised-button>Potvrdiť</button>
+<button style="margin: 1em; width: 60%;" (click)="submit($event)" mat-raised-button>Potvrdiť</button>

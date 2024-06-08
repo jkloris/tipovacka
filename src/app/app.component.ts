@@ -14,4 +14,11 @@ import { FormComponent } from './tabs/form/form.component';
 })
 export class AppComponent {
   title = 'tipovacka';
+  protected tabIndex = 0;
+
+  onTicketSubmit(event: boolean){
+    if(event){
+      this.tabIndex = 1;
+    }
+  }
 }

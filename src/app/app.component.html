@@ -1,4 +1,7 @@
-<mat-tab-group [backgroundColor]="'primary'">
+<mat-tab-group [backgroundColor]="'primary'" [selectedIndex]="tabIndex">
+  <mat-tab label="Tipovačka">
+    <app-form (onSubmit)="onTicketSubmit($event)"></app-form>
+  </mat-tab>
   <mat-tab label="Domov">
     <app-main></app-main>
 
@@ -6,9 +9,7 @@
   <mat-tab label="Pravidlá">
     <app-rules></app-rules>
   </mat-tab>
-  <mat-tab label="Tipovačka">
-    <app-form></app-form>
-  </mat-tab>
+
 </mat-tab-group>
 
 

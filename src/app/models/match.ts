@@ -15,5 +15,14 @@ export class Match{
         this.awayScore = awayScore
     }
 
+    getWinner(): number{
+        if(this.homeScore > this.awayScore){
+            return 1
+        } else if(this.homeScore < this.awayScore){
+            return 2
+        }
+        return 0
+    }
+
     
 }

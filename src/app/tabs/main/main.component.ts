@@ -19,6 +19,7 @@ export class MainComponent {
   dataSource: Player[] = [];
   
   ngOnInit(){
+    this.calcService.calcPoints();
     this.dataSource = this.calcService.getPlayers();
   }
  
