@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { Player } from '../models/player';
 import { Match } from '../models/match';
 import { euro } from '../../../public/euro';
+import { ondro_ticket } from '../../../public/tickets/ondro';
+import { jergi_ticket } from '../../../public/tickets/jergi';
+import { kubo_ticket } from '../../../public/tickets/kubo';
+import { tabi_ticket } from '../../../public/tickets/tabi';
+import { ivo_ticket } from '../../../public/tickets/ivo';
+import { plcho_ticket } from '../../../public/tickets/plcho';
+import { mato_ticket } from '../../../public/tickets/mato';
 
 @Injectable({
   providedIn: 'root'
@@ -14,42 +21,37 @@ export class CalcService {
     {
       name: 'Ondro',
       points: 0,
-      ticket: null
+      ticket: ondro_ticket
     },
     {
       name: 'Jergi',
       points: 0,
-      ticket: {"winner1":"Germany","topStriker":"Mbappe","matches":{"Germ:Scot":{"homeScore":2,"awayScore":0},"Hung:Swit":{"homeScore":1,"awayScore":1},"Spai:Croa":{"homeScore":2,"awayScore":0},"Ital:Alba":{"homeScore":3,"awayScore":0},"Slov:Denm":{"homeScore":1,"awayScore":1},"Serb:Engl":{"homeScore":1,"awayScore":2},"Pola:Neth":{"homeScore":0,"awayScore":2},"Aust:Fran":{"homeScore":1,"awayScore":3},"Roma:Ukra":{"homeScore":1,"awayScore":1},"Belg:Slov":{"homeScore":2,"awayScore":0},"Turk:Geor":{"homeScore":1,"awayScore":1},"Port:Czec":{"homeScore":2,"awayScore":1},"Germ:Hung":{"homeScore":2,"awayScore":2},"Scot:Swit":{"homeScore":0,"awayScore":1},"Croa:Alba":{"homeScore":2,"awayScore":1},"Spai:Ital":{"homeScore":2,"awayScore":1},"Slov:Serb":{"homeScore":1,"awayScore":2},"Denm:Engl":{"homeScore":1,"awayScore":3},"Pola:Aust":{"homeScore":1,"awayScore":3},"Neth:Fran":{"homeScore":1,"awayScore":2},"Slov:Ukra":{"homeScore":1,"awayScore":0},"Belg:Roma":{"homeScore":3,"awayScore":0},"Geor:Czec":{"homeScore":1,"awayScore":3},"Turk:Port":{"homeScore":0,"awayScore":2},"Swit:Germ":{"homeScore":1,"awayScore":2},"Scot:Hung":{"homeScore":2,"awayScore":1},"Alba:Spai":{"homeScore":0,"awayScore":3},"Croa:Ital":{"homeScore":1,"awayScore":2},"Engl:Slov":{"homeScore":3,"awayScore":0},"Denm:Serb":{"homeScore":1,"awayScore":1},"Neth:Aust":{"homeScore":2,"awayScore":1},"Fran:Pola":{"homeScore":3,"awayScore":1},"Slov:Roma":{"homeScore":2,"awayScore":1},"Ukra:Belg":{"homeScore":0,"awayScore":1},"Geor:Port":{"homeScore":0,"awayScore":2},"Czec:Turk":{"homeScore":2,"awayScore":0}}}
+      ticket: jergi_ticket
     },
     {
       name: 'Kubo',
       points: 0,
-      ticket: null
+      ticket: kubo_ticket
     },
     {
       name: 'Tabi',
       points: 0,
-      ticket: null
+      ticket: tabi_ticket
     },
     {
       name: 'Ivo',
       points: 0,
-      ticket: null
+      ticket: ivo_ticket
     },
     {
       name: 'Plcho',
       points: 0,
-      ticket: null
-    },
-    {
-      name: 'Reno',
-      points: 0,
-      ticket: null
+      ticket: plcho_ticket
     },
     {
       name: 'Mato',
       points: 0,
-      ticket: null
+      ticket: mato_ticket
     }
 
   ]
@@ -75,12 +77,8 @@ export class CalcService {
         matches.push(new Match(m.team1.name, m.team2.name))
       }
     }
-    // matches[0].setScore(1,0)
-    // matches[1].setScore(1,4)
-    // matches[2].setScore(2,1)
-    // matches[3].setScore(2,2)
-    // matches[4].setScore(4,0)
-    // matches[5].setScore(1,0)
+    matches[0].setScore(5,1)
+
     return matches
   }
 
