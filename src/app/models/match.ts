@@ -10,7 +10,6 @@ export class Match{
     }
 
     setScore(homeScore: number, awayScore: number){
-        console.log(homeScore, awayScore)
         this.homeScore = homeScore
         this.awayScore = awayScore
     }

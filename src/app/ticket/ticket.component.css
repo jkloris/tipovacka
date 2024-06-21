@@ -1,0 +1,36 @@
+.matches{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    box-shadow: 0 3px 6px 0px #00000075;
+    margin-bottom: 1em;
+    padding: 1em 0 1em 0;
+}
+
+.match{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.matches div{
+    width: 33%;
+    text-align: center;
+}
+
+.points{
+    display: flex;
+    align-items: center;
+    color: green
+
+}
+
+.team-name{
+    /* font-weight: bold; */
+    /* font-size: 1.2em; */
+}
+
+.matches-container{
+    height: 70vh;
+    overflow: auto;
+}

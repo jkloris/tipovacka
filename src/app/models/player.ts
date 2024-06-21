@@ -4,7 +4,7 @@ export class Player{
     
     name: string = ""
     points: number = 0
-    ticket: Ticket | null = null
+    ticket!: Ticket
 
     constructor(name: string){
         this.name = name

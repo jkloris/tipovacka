@@ -33,3 +33,13 @@ h1{
 .long-input{
     margin: 2em 1em;
 }
+
+.tickets{
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+    width: 90%;
+    background: #00000096;
+    color: white;
+    padding: 1em;
+}

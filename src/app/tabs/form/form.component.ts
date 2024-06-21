@@ -6,17 +6,24 @@ import {MatInputModule} from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmailService } from '../../services/email.service';
+import {MatSelectModule} from '@angular/material/select';
+import {MatListModule} from '@angular/material/list';
+import { Match } from '../../models/match';
+
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [MatFormFieldModule, CommonModule, MatInputModule, MatButtonModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, CommonModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatSelectModule, MatListModule],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
 })
 export class FormComponent {
   @Output() onSubmit: EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor(private fb: FormBuilder, public calcService: CalcService, private emailService: EmailService){}
-
+  tickets = new FormControl({
+    value: this.calcService.getPlayers()[0].ticket,
+    disabled: false
+  });
   form!: FormGroup
   ngOnInit(){
     this.form = this.fb.group({
@@ -52,5 +59,14 @@ export class FormComponent {
     this.onSubmit.emit(suc);
   }
 
+
+  getMatches(){
+    let matches: Match[] = [];
+    for(const [key, value] of Object.entries(this.form.get('matches')?.value)){
+
+      matches.push(new Match(key.split(':')[0], key.split(':')[1]))
+    }
+    return matches
+  }
 
 }

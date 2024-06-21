@@ -1,5 +1,18 @@
+<!-- <div class="tickets">
+    <mat-form-field>
+        <mat-label>Tikety</mat-label>
+        <mat-select [formControl]="tickets" >
+            <mat-option *ngFor="let p of this.calcService.getPlayers()" [value]="p.ticket">{{p.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-<form class="container" [formGroup]="form">
+      <div>
+         <div *ngFor="let m of this.getMatches()">{{m | json}}</div>
+      </div>
+</div> -->
+
+
+<form *ngIf="false" class="container" [formGroup]="form">
 
     <h1>Vytvor tiket</h1>
     <mat-form-field appearance="fill" class="long-input" >
@@ -34,4 +47,4 @@
     </div>
 </form>
 
-<button style="margin: 1em; width: 60%;" (click)="submit($event)" mat-raised-button>Potvrdiť</button>
+<button *ngIf="false" style="margin: 1em; width: 60%;" (click)="submit($event)" mat-raised-button>Potvrdiť</button>

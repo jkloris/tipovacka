@@ -1,6 +1,8 @@
 <h1>Tipovačka EURO24</h1>
+<!-- <app-ticket [ticket]="this.calcService.getPlayers()[0].ticket" [matches]="this.calcService.getMatches()"></app-ticket> -->
 <div class="container">
    
+
     <div class="players">
         <table mat-table [dataSource]="dataSource" >
         <!-- Order Column -->
@@ -22,15 +24,15 @@
         </ng-container>
       
         <tr  class="table-header" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr style="background-color: white;" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr (click)="onRowClick(row)" style="background-color: white; cursor: pointer;" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
 
     <div class="matches">
         <mat-list>
-            <div *ngFor="let match of calcService.getMatches()" [ngClass]="{'played-matched': match.homeScore > 0}" >
+            <div *ngFor="let match of calcService.getMatches()" [ngClass]="{'played-matched': match.homeScore >= 0}" >
                 <mat-list-item >
-                    <div class="match" [ngClass]="{'played-matched': match.homeScore > 0}">
+                    <div class="match" >
                         <p>{{match.home}}</p>
                         <p>{{match.homeScore >= 0 ? match.homeScore:'-'}} : {{match.awayScore >= 0 ? match.awayScore:'-'}}</p>
                         <p>{{match.away}}</p>

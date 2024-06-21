@@ -18,15 +18,16 @@ export class CalcService {
   constructor() { }
   private players: Player[] = [
     
-    {
-      name: 'Ondro',
-      points: 0,
-      ticket: ondro_ticket
-    },
+
     {
       name: 'Jergi',
       points: 0,
       ticket: jergi_ticket
+    },
+    {
+      name: 'Ondro',
+      points: 0,
+      ticket: ondro_ticket
     },
     {
       name: 'Kubo',
@@ -78,6 +79,25 @@ export class CalcService {
       }
     }
     matches[0].setScore(5,1)
+    matches[1].setScore( 1,3)
+    matches[2].setScore( 3,0)
+    matches[3].setScore( 2,1)
+    matches[4].setScore( 1,1)
+    matches[5].setScore( 0,1)
+    matches[6].setScore( 1,2)
+    matches[7].setScore( 0,1)
+    matches[8].setScore( 3,0)
+    matches[9].setScore( 0,1)
+    matches[10].setScore(3,1)
+    matches[11].setScore(2,1)
+    matches[12].setScore(2,0)
+    matches[13].setScore(1,1)
+    matches[14].setScore(2,2)
+    matches[15].setScore(1,0)
+    matches[16].setScore(1,1)
+    matches[17].setScore(1,1)
+
+
 
     return matches
   }
@@ -93,14 +113,19 @@ export class CalcService {
       let pm
       for(let m of this.matches){
         if( m.homeScore < 0) continue
-
         pm = player.ticket.matches[this.getMatchId(m)] as Match
-        player.points += 5 - (Math.abs( pm.homeScore - m.homeScore) + Math.abs( pm.awayScore - m.awayScore)) 
-        player.points += m.getWinner() === this.abstractMatchWinner(pm)? 5 : 0
+        player.points += this.calcPointsForMatch(m, pm)
       
       }
     }
     this.sortPlayers()
+  }
+
+  calcPointsForMatch(match: Match, pm : Match){
+    let points = 0
+    points += 5 - (Math.abs( pm.homeScore - match.homeScore) + Math.abs( pm.awayScore - match.awayScore)) 
+    points += match.getWinner() === this.abstractMatchWinner(pm)? 5 : 0
+    return points
   }
 
   abstractMatchWinner(m : Match){
