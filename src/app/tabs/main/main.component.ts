@@ -26,7 +26,7 @@ export class MainComponent {
   }
 
   ngAfterViewInit(){
-    alert("Nova funkcionalita! Klikni na hráča v tabuľke bodov pre zobrazenie tiketu.")
+    // alert("Nova funkcionalita! Klikni na hráča v tabuľke bodov pre zobrazenie tiketu.")
   }
 
   onRowClick(row:any){

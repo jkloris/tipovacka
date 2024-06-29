@@ -1,38 +1,27 @@
-<!-- <div class="tickets">
-    <mat-form-field>
-        <mat-label>Tikety</mat-label>
-        <mat-select [formControl]="tickets" >
-            <mat-option *ngFor="let p of this.calcService.getPlayers()" [value]="p.ticket">{{p.name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div>
-         <div *ngFor="let m of this.getMatches()">{{m | json}}</div>
-      </div>
-</div> -->
 
 
-<form *ngIf="false" class="container" [formGroup]="form">
 
-    <h1>Vytvor tiket</h1>
+<form class="container" [formGroup]="form">
+
+    <h1>Vytvor tiket na osemfinále</h1>
     <mat-form-field appearance="fill" class="long-input" >
         <mat-label>Tvoje meno</mat-label>
         <input matInput formControlName="yourName">
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="long-input">
-        <mat-label>Celkový víťaz</mat-label>
-        <input  matInput formControlName="winner1">
+        <mat-label>Celkový víťaz druhý tip</mat-label>
+        <input  matInput formControlName="winner2">
     </mat-form-field>
 
 
-    <mat-form-field appearance="fill" class="long-input">
+    <!-- <mat-form-field appearance="fill" class="long-input">
         <mat-label>Najlepší strelec</mat-label>
         <input matInput formControlName="topStriker">
-    </mat-form-field>
+    </mat-form-field> -->
 
     <div formGroupName="matches">
-        <div  *ngFor="let m of calcService.getMatches()" class="match" [formGroupName]="calcService.getMatchId(m)">
+        <div  *ngFor="let m of this.matches" class="match" [formGroupName]="calcService.getMatchId(m)">
 
             <mat-form-field appearance="fill">
                 <mat-label>{{m.home}}</mat-label>
@@ -47,4 +36,4 @@
     </div>
 </form>
 
-<button *ngIf="false" style="margin: 1em; width: 60%;" (click)="submit($event)" mat-raised-button>Potvrdiť</button>
+<button style="margin: 1em; width: 60%;" (click)="submit($event)" mat-raised-button>Potvrdiť</button>

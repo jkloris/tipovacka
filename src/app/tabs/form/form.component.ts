@@ -24,27 +24,34 @@ export class FormComponent {
     value: this.calcService.getPlayers()[0].ticket,
     disabled: false
   });
+
+  public matches: Match[] =[]
   form!: FormGroup
   ngOnInit(){
     this.form = this.fb.group({
       yourName: ['', Validators.required],
-      winner1: ['', Validators.required],
-      topStriker: ['', Validators.required],
+      winner2: ['', Validators.required],
+      // topStriker: ['', Validators.required],
       matches: this.fb.group({})
     });
 
     const matchesGroup = this.form.get('matches') as FormGroup;
     
     this.calcService.getMatches().forEach(match => {
-      const matchId = this.calcService.getMatchId(match);
-      const matchGroup = this.fb.group({
-        homeScore: ['', Validators.required],
-        awayScore: ['', Validators.required]
-      });
+      if(match.homeScore < 0){
 
-      matchesGroup.addControl(matchId, matchGroup);
+        const matchId = this.calcService.getMatchId(match);
+        const matchGroup = this.fb.group({
+          homeScore: ['', Validators.required],
+          awayScore: ['', Validators.required]
+        });
+        
+        matchesGroup.addControl(matchId, matchGroup);
+        this.matches.push(match)
+      } 
     });
-
+    
+    console.log(this.matches)
   
   }
   
@@ -55,8 +62,8 @@ export class FormComponent {
       alert("Invalid form, please fill all the fields!");
       return
     }
+    this.onSubmit.emit(true);
     const suc = await this.emailService.sendEmail(event, JSON.stringify(this.form.value) );
-    this.onSubmit.emit(suc);
   }
 
 
