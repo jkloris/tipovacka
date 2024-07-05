@@ -16,7 +16,7 @@
         <div *ngFor="let m of this.calcService.getMatches()" class="matches"  >
             <div class="team-name">{{m.home}}</div>
             <div class="match">
-                <h3 style="margin: 0;">{{getMatch(m).homeScore }} : {{getMatch(m).awayScore}}</h3>
+                <h3 style="margin: 0;">{{getMatch(m)?.homeScore }} : {{getMatch(m)?.awayScore}}</h3>
                 <p [ngStyle]="{'color': getPoints(m)>=5?'green':'red','margin': '0' }" class="points" *ngIf="m.awayScore >= 0">Body: {{this.getPoints(m)}}
                 <mat-icon  >{{getPoints(m)>=5?"check_circle":"cancel"}}</mat-icon>    
                 </p>

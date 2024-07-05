@@ -1,3 +1,4 @@
+//https://github.com/openfootball/euro.json/blob/master/2024/euro.json
 export const euro ={
   "name": "Euro 2024",
   "rounds": [
@@ -1387,7 +1388,28 @@ export const euro ={
             "code": "ITA"
           },
           "score": {
-          }
+            "ft": [
+              2,
+              0
+            ],
+            "ht": [
+              1,
+              0
+            ]
+          },
+          "goals1": [
+            {
+              "name": "Freuler",
+              "minute": 37
+            },
+            {
+              "name": "Vargas",
+              "minute": 46
+            }
+          ],
+          "goals2": [
+
+          ]
         },
         {
           "num": 37,
@@ -1402,22 +1424,69 @@ export const euro ={
             "code": "DEN"
           },
           "score": {
-          }
+            "ft": [
+              2,
+              0
+            ],
+            "ht": [
+              0,
+              0
+            ]
+          },
+          "goals1": [
+            {
+              "name": "Havertz",
+              "minute": 53,
+              "penalty": true
+            },
+            {
+              "name": "Musiala",
+              "minute": 68
+            }
+          ],
+          "goals2": [
+
+          ]
         },
         {
           "num": 40,
           "date": "2024-06-30",
           "time": "18:00",
           "team1": {
-            "name": "England",
-            "code": "ENG"
-          },
-          "team2": {
-            "name": "Slovakia",
+             "name": "Slovakia",
             "code": "SVK"
           },
+          "team2": {
+           "name": "England",
+            "code": "ENG"
+          },
           "score": {
-          }
+            "ft": [
+              2,
+              1
+            ],
+            "ht": [
+              0,
+              1
+            ]
+          },
+          "goals1": [
+            {
+              "name": "Bellingham",
+              "minute": 90,
+              "offset": 5
+            },
+            {
+              "name": "Kane",
+              "minute": 91
+            }
+          ],
+          "goals2": [
+            {
+              "name": "Schranz",
+              "minute": 25
+            }
+          ]
         },
         {
           "num": 39,
@@ -1432,7 +1501,40 @@ export const euro ={
             "code": "GEO"
           },
           "score": {
-          }
+            "ft": [
+              4,
+              1
+            ],
+            "ht": [
+              1,
+              1
+            ]
+          },
+          "goals1": [
+            {
+              "name": "Rodri",
+              "minute": 39
+            },
+            {
+              "name": "Ruiz",
+              "minute": 51
+            },
+            {
+              "name": "Williams",
+              "minute": 75
+            },
+            {
+              "name": "Olmo",
+              "minute": 83
+            }
+          ],
+          "goals2": [
+            {
+              "name": "Le Normand",
+              "minute": 18,
+              "owngoal": true
+            }
+          ]
         },
         {
           "num": 42,
@@ -1447,7 +1549,25 @@ export const euro ={
             "code": "BEL"
           },
           "score": {
-          }
+            "ft": [
+              1,
+              0
+            ],
+            "ht": [
+              0,
+              0
+            ]
+          },
+          "goals1": [
+            {
+              "name": "Vertonghen",
+              "minute": 85,
+              "owngoal": true
+            }
+          ],
+          "goals2": [
+
+          ]
         },
         {
           "num": 41,
@@ -1462,6 +1582,22 @@ export const euro ={
             "code": "SVN"
           },
           "score": {
+            "ft": [
+              0,
+              0
+            ],
+            "ht": [
+              0,
+              0
+            ],
+            "et": [
+              0,
+              0
+            ],
+            "p": [
+              3,
+              0
+            ]
           }
         },
         {
@@ -1477,7 +1613,33 @@ export const euro ={
             "code": "NED"
           },
           "score": {
-          }
+            "ft": [
+              0,
+              3
+            ],
+            "ht": [
+              0,
+              1
+            ]
+          },
+          "goals1": [
+
+          ],
+          "goals2": [
+            {
+              "name": "Gakpo",
+              "minute": 20
+            },
+            {
+              "name": "Malen",
+              "minute": 83
+            },
+            {
+              "name": "Malen",
+              "minute": 90,
+              "offset": 3
+            }
+          ]
         },
         {
           "num": 44,
@@ -1486,6 +1648,95 @@ export const euro ={
           "team1": {
             "name": "Austria",
             "code": "AUT"
+          },
+          "team2": {
+            "name": "Turkey",
+            "code": "TUR"
+          },
+          "score": {
+            "ft": [
+              1,
+              2
+            ],
+            "ht": [
+              0,
+              1
+            ]
+          },
+          "goals1": [
+            {
+              "name": "Gregoritsch",
+              "minute": 66
+            }
+          ],
+          "goals2": [
+            {
+              "name": "Demiral",
+              "minute": 1
+            },
+            {
+              "name": "Demiral",
+              "minute": 59
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Quarter-finals",
+      "matches": [
+        {
+          "num": 45,
+          "date": "2024-07-05",
+          "time": "18:00",
+          "team1": {
+            "name": "Spain",
+            "code": "ESP"
+          },
+          "team2": {
+            "name": "Germany",
+            "code": "GER"
+          },
+          "score": {
+          }
+        },
+        {
+          "num": 46,
+          "date": "2024-07-05",
+          "time": "21:00",
+          "team1": {
+            "name": "Portugal",
+            "code": "POR"
+          },
+          "team2": {
+            "name": "France",
+            "code": "FRA"
+          },
+          "score": {
+          }
+        },
+        {
+          "num": 48,
+          "date": "2024-07-06",
+          "time": "18:00",
+          "team1": {
+            "name": "England",
+            "code": "ENG"
+          },
+          "team2": {
+            "name": "Switzerland",
+            "code": "SUI"
+          },
+          "score": {
+          }
+        },
+        {
+          "num": 47,
+          "date": "2024-07-06",
+          "time": "21:00",
+          "team1": {
+            "name": "Netherlands",
+            "code": "NED"
           },
           "team2": {
             "name": "Turkey",

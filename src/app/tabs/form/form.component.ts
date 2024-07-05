@@ -30,7 +30,7 @@ export class FormComponent {
   ngOnInit(){
     this.form = this.fb.group({
       yourName: ['', Validators.required],
-      winner2: ['', Validators.required],
+      // winner2: ['', Validators.required],
       // topStriker: ['', Validators.required],
       matches: this.fb.group({})
     });

@@ -115,6 +115,15 @@ export class CalcService {
     matches[34].setScore(2,0)
     matches[35].setScore(1,2)
     matches[36].setScore(2,0)
+    matches[37].setScore(2,0)
+    matches[38].setScore(1,1)
+    matches[38].setScore(1,1)
+    matches[39].setScore(4,1)
+    matches[40].setScore(1,0)
+    matches[41].setScore(0,0)
+    matches[42].setScore(0,3)
+    matches[43].setScore(1,2)
+    matches[44].setScore(1,1)
 
 
 
