@@ -1746,6 +1746,41 @@ export const euro ={
           }
         }
       ]
+    },
+    {
+      "name": "Semi-finals",
+      "matches": [
+        {
+          "num": 49,
+          "date": "2024-07-09",
+          "time": "21:00",
+          "team1": {
+            "name": "Spain",
+            "code": "ESP"
+          },
+          "team2": {
+            "name": "France",
+            "code": "FRA"
+          },
+          "score": {
+          }
+        },
+        {
+          "num": 50,
+          "date": "2024-07-10",
+          "time": "21:00",
+          "team1": {
+            "name": "Netherlands",
+            "code": "NED"
+          },
+          "team2": {
+            "name": "England",
+            "code": "ENG"
+          },
+          "score": {
+          }
+        }
+      ]
     }
   ]
 }
