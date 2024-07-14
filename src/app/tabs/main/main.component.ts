@@ -7,10 +7,11 @@ import { Player } from '../../models/player';
 import {MatTableModule} from '@angular/material/table';
 import { TicketComponent } from '../../ticket/ticket.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [CommonModule, MatDividerModule, MatListModule, MatTableModule, TicketComponent],
+  imports: [CommonModule, MatDividerModule, MatListModule, MatTableModule, TicketComponent, MatIconModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
 })

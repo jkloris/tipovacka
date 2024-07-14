@@ -127,6 +127,9 @@ export class CalcService {
     matches[45].setScore(0,0)
     matches[46].setScore(1,1)
     matches[47].setScore(2,1)
+    matches[48].setScore(2,1)
+    matches[49].setScore(1,2)
+    matches[50].setScore(2,1)
 
 
 
@@ -148,8 +151,23 @@ export class CalcService {
         player.points += this.calcPointsForMatch(m, pm)
       
       }
+      this.addWinnerPoints(player)
     }
     this.sortPlayers()
+  }
+
+  addWinnerPoints(player: Player){
+    switch (player.name) {
+      case "Ondro": 
+        player.points += 10 //spain winner2
+        break;
+      case "Ivo":
+        player.points += 10 //spain winner2
+        break
+      default:
+        break;
+    }
+
   }
 
   calcPointsForMatch(match: Match, pm : Match){

@@ -72,3 +72,15 @@ h1{
 table{
     background-color: transparent;
 }
+
+.first{
+    background-color: gold !important;
+}
+
+.second{
+    background-color: silver !important;
+}
+
+.third{
+    background-color: rgb(224, 134, 75) !important;
+}
