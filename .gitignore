@@ -1,0 +1,4 @@
+data/
+Backend/data/
+*.db
+.env

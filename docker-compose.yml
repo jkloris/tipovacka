@@ -1,0 +1,19 @@
+services:
+  api:
+    build: ./Backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/tipovacka.db
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
+      CORS_ORIGINS: http://localhost:8080,http://localhost:4200
+      SEED_PASSWORD: ${SEED_PASSWORD:-tipovacka}
+    volumes:
+      - ./data:/data
+
+  client:
+    build: ./Client
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
