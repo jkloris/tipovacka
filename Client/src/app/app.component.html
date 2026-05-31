@@ -1,0 +1,20 @@
+<div class="auth-bar">
+  @if (auth.isLoggedIn()) {
+    <span>Prihlásený: {{ auth.currentUser()?.username }}</span>
+    <button mat-button (click)="logout()">Odhlásiť</button>
+  } @else {
+    <button mat-button (click)="openLogin()">Prihlásiť sa</button>
+  }
+</div>
+
+<mat-tab-group [backgroundColor]="'primary'" [selectedIndex]="tabIndex">
+  <mat-tab disabled label="Tipovačka">
+    <app-form (onSubmit)="onTicketSubmit($event)"></app-form>
+  </mat-tab>
+  <mat-tab label="Domov">
+    <app-main></app-main>
+  </mat-tab>
+  <mat-tab label="Pravidlá">
+    <app-rules></app-rules>
+  </mat-tab>
+</mat-tab-group>

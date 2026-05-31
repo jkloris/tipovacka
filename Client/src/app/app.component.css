@@ -1,0 +1,13 @@
+.auth-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #1976d2;
+  color: white;
+}
+
+.auth-bar button {
+  color: white;
+}

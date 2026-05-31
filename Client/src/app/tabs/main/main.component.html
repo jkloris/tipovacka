@@ -1,0 +1,41 @@
+<h1>Tipovačka EURO24</h1>
+<div class="container">
+    <div class="players">
+        <table mat-table [dataSource]="dataSource" >
+        <ng-container matColumnDef="order">
+          <th class="table-header" mat-header-cell *matHeaderCellDef>Poradie</th>
+          <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="name">
+          <th class="table-header" mat-header-cell *matHeaderCellDef>Meno</th>
+          <td mat-cell *matCellDef="let element; let i = index">{{element.name}}
+            <mat-icon *ngIf="i == 0">emoji_events</mat-icon>
+          </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="points">
+          <th class="table-header" mat-header-cell *matHeaderCellDef>Body</th>
+          <td mat-cell *matCellDef="let element">{{element.points}}</td>
+        </ng-container>
+      
+        <tr  class="table-header" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr (click)="onRowClick(row)" [ngClass]="{'first': i == 0, 'second': i == 1, 'third': i == 2 || i == 3}" style="background-color: white; cursor: pointer;" mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="matches">
+        <mat-list>
+            <div *ngFor="let match of matches" [ngClass]="{'played-matched': match.home_score >= 0}" >
+                <mat-list-item >
+                    <div class="match" >
+                        <p>{{match.home}}</p>
+                        <p>{{match.home_score >= 0 ? match.home_score:'-'}} : {{match.away_score >= 0 ? match.away_score:'-'}}</p>
+                        <p>{{match.away}}</p>
+                    </div>
+                </mat-list-item>
+                <mat-divider ></mat-divider>
+            </div>
+        </mat-list>
+    </div>
+</div>

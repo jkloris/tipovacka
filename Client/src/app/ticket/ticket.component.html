@@ -1,0 +1,27 @@
+<div style="background-color: white;">
+    
+    <div class="matches">
+        Celkový víťaz: &nbsp;<b>{{" "+this.ticket.winner1}}</b>
+    </div>
+
+    <div class="matches">
+        Celkový víťaz, druhý tip: &nbsp;<b>{{" "+this.ticket.winner2}}</b>
+    </div>
+    <div class="matches">
+
+        Najlepší strelec: &nbsp;<b>{{" "+this.ticket.top_striker}}</b>
+    </div>
+
+    <div class="matches-container" >
+        <div *ngFor="let m of breakdown" class="matches"  >
+            <div class="team-name">{{m.home}}</div>
+            <div class="match">
+                <h3 style="margin: 0;">{{m.home_score }} : {{m.away_score}}</h3>
+                <p [ngStyle]="{'color': m.points>=5?'green':'red','margin': '0' }" class="points" *ngIf="m.actual_away_score >= 0">Body: {{m.points}}
+                <mat-icon  >{{m.points>=5?"check_circle":"cancel"}}</mat-icon>    
+                </p>
+            </div>
+            <div class="team-name">{{m.away}}</div>
+        </div>
+    </div>
+</div>
