@@ -16,10 +16,15 @@ def _needs_schema_reset() -> bool:
     tables = set(inspector.get_table_names())
     if "predictions" not in tables:
         return True
+    if "matches" not in tables:
+        return False
+    cols = {c["name"] for c in inspector.get_columns("matches")}
+    if "match_number" not in cols or "kickoff_at" not in cols:
+        return True
     if "tickets" not in tables:
         return False
-    cols = {c["name"] for c in inspector.get_columns("tickets")}
-    return "user_id" not in cols or "matches_json" in cols
+    ticket_cols = {c["name"] for c in inspector.get_columns("tickets")}
+    return "user_id" not in ticket_cols or "matches_json" in ticket_cols
 
 
 @asynccontextmanager

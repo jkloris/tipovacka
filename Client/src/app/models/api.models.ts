@@ -1,9 +1,11 @@
 export interface MatchDto {
   id: number;
+  match_number: number;
   home: string;
   away: string;
-  home_score: number;
-  away_score: number;
+  kickoff_at: string | null;
+  home_score: number | null;
+  away_score: number | null;
   match_id: string;
 }
 
@@ -29,6 +31,31 @@ export interface TicketDto {
   top_striker: string;
   matches: Record<string, { homeScore: number; awayScore: number }>;
   match_breakdown: MatchPredictionDto[];
+}
+
+export interface EditableMatchDto {
+  match_id: string;
+  match_number: number;
+  home: string;
+  away: string;
+  kickoff_at: string | null;
+  prediction_home: number | null;
+  prediction_away: number | null;
+  filled: boolean;
+}
+
+export interface MyTicketDto {
+  winner1: string;
+  winner2?: string | null;
+  top_scorer: string;
+  player_name: string | null;
+  editable_matches: EditableMatchDto[];
+}
+
+export interface PredictionUpdatePayload {
+  matchId: string;
+  homeScore: number;
+  awayScore: number;
 }
 
 export interface TokenResponse {

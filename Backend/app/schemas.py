@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Field
 
 
@@ -18,10 +20,12 @@ class LoginRequest(BaseModel):
 
 class MatchOut(BaseModel):
     id: int
+    match_number: int
     home: str
     away: str
-    home_score: int
-    away_score: int
+    kickoff_at: datetime | None = None
+    home_score: int | None = None
+    away_score: int | None = None
     match_id: str
 
     model_config = {"from_attributes": True}
@@ -61,3 +65,30 @@ class TicketSubmit(BaseModel):
 class UserOut(BaseModel):
     username: str
     player_name: str | None
+
+
+class EditableMatchOut(BaseModel):
+    match_id: str
+    match_number: int
+    home: str
+    away: str
+    kickoff_at: datetime | None = None
+    prediction_home: int | None = None
+    prediction_away: int | None = None
+    filled: bool
+
+
+class MyTicketOut(BaseModel):
+    winner1: str
+    winner2: str | None = None
+    top_scorer: str
+    player_name: str | None
+    editable_matches: list[EditableMatchOut]
+
+
+class PredictionUpdate(BaseModel):
+    match_id: str = Field(alias="matchId")
+    home_score: int = Field(alias="homeScore")
+    away_score: int = Field(alias="awayScore")
+
+    model_config = {"populate_by_name": True}

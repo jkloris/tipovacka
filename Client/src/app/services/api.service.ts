@@ -3,8 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import {
+  EditableMatchDto,
   LeaderboardEntry,
   MatchDto,
+  MyTicketDto,
+  PredictionUpdatePayload,
   TicketDto,
 } from '../models/api.models';
 
@@ -32,6 +35,17 @@ export class ApiService {
   getPlayerTicket(name: string): Observable<TicketDto> {
     return this.http.get<TicketDto>(
       `${environment.apiUrl}/players/${encodeURIComponent(name)}/ticket`
+    );
+  }
+
+  getMyTicket(): Observable<MyTicketDto> {
+    return this.http.get<MyTicketDto>(`${environment.apiUrl}/tickets/me`);
+  }
+
+  savePrediction(payload: PredictionUpdatePayload): Observable<EditableMatchDto> {
+    return this.http.put<EditableMatchDto>(
+      `${environment.apiUrl}/tickets/me/predictions`,
+      payload
     );
   }
 

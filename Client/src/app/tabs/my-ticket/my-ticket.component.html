@@ -1,0 +1,71 @@
+<div class="container">
+  <h1>Môj tiket</h1>
+
+  @if (!auth.isLoggedIn()) {
+    <p class="hint">Pre úpravu tiketu sa musíš prihlásiť.</p>
+    <button mat-raised-button color="primary" (click)="ensureLoggedIn()">Prihlásiť sa</button>
+  } @else if (loading) {
+    <mat-spinner diameter="40"></mat-spinner>
+  } @else if (error && !ticket) {
+    <p class="error">{{ error }}</p>
+    <button mat-button (click)="loadTicket()">Skúsiť znova</button>
+  } @else if (ticket) {
+    <p class="summary">
+      {{ ticket.player_name || auth.currentUser()?.username }} —
+      vyplnených {{ filledCount }} / {{ matches.length }} zápasov
+    </p>
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+    <div class="matches">
+      @for (m of matches; track m.match_id) {
+        <div
+          class="match-row"
+          [class.unfilled]="isUnfilled(m)"
+          [class.filled]="m.filled"
+          [class.saving]="savingMatchId === m.match_id"
+        >
+          <div class="match-meta">
+            <span class="match-num">#{{ m.match_number }}</span>
+            @if (m.kickoff_at) {
+              <span class="kickoff">{{ m.kickoff_at | date: 'dd.MM.yyyy HH:mm' }} UTC</span>
+            }
+          </div>
+          <div class="match-inputs">
+            <mat-form-field appearance="fill" class="score-field">
+              <mat-label>{{ m.home }}</mat-label>
+              <input
+                matInput
+                type="number"
+                min="0"
+                [(ngModel)]="scores[m.match_id].home"
+                [ngModelOptions]="{ standalone: true }"
+                (blur)="onScoreBlur(m)"
+              />
+            </mat-form-field>
+            <span class="vs">:</span>
+            <mat-form-field appearance="fill" class="score-field">
+              <mat-label>{{ m.away }}</mat-label>
+              <input
+                matInput
+                type="number"
+                min="0"
+                [(ngModel)]="scores[m.match_id].away"
+                [ngModelOptions]="{ standalone: true }"
+                (blur)="onScoreBlur(m)"
+              />
+            </mat-form-field>
+          </div>
+          @if (savingMatchId === m.match_id) {
+            <span class="status saving-label">Ukladám…</span>
+          } @else if (savedMatchId === m.match_id) {
+            <span class="status saved-label">Uložené</span>
+          } @else if (isUnfilled(m)) {
+            <span class="status unfilled-label">Neúplné</span>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

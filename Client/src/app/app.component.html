@@ -7,9 +7,13 @@
   }
 </div>
 
-<mat-tab-group [backgroundColor]="'primary'" [selectedIndex]="tabIndex">
-  <mat-tab disabled label="Tipovačka">
-    <app-form (onSubmit)="onTicketSubmit($event)"></app-form>
+<mat-tab-group
+  [backgroundColor]="'primary'"
+  [selectedIndex]="tabIndex"
+  (selectedIndexChange)="onTabChange($event)"
+>
+  <mat-tab label="Môj tiket">
+    <app-my-ticket></app-my-ticket>
   </mat-tab>
   <mat-tab label="Domov">
     <app-main></app-main>

@@ -1,4 +1,6 @@
-from sqlalchemy import ForeignKey, Integer, String, UniqueConstraint
+from datetime import datetime
+
+from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -19,10 +21,12 @@ class Match(Base):
     __tablename__ = "matches"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    match_number: Mapped[int] = mapped_column(Integer, unique=True, index=True)
     home: Mapped[str] = mapped_column(String(128))
     away: Mapped[str] = mapped_column(String(128))
-    home_score: Mapped[int] = mapped_column(Integer, default=-1)
-    away_score: Mapped[int] = mapped_column(Integer, default=-1)
+    kickoff_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    home_score: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    away_score: Mapped[int | None] = mapped_column(Integer, nullable=True)
     sort_order: Mapped[int] = mapped_column(Integer, default=0)
 
 

@@ -1,25 +1,36 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { FormComponent } from './form.component';
+import { MyTicketComponent } from './my-ticket.component';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 
-describe('FormComponent', () => {
-  let component: FormComponent;
-  let fixture: ComponentFixture<FormComponent>;
+describe('MyTicketComponent', () => {
+  let component: MyTicketComponent;
+  let fixture: ComponentFixture<MyTicketComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormComponent],
+      imports: [MyTicketComponent],
       providers: [
-        { provide: ApiService, useValue: { getOpenMatches: () => of([]) } },
-        { provide: AuthService, useValue: { isLoggedIn: () => false } },
+        {
+          provide: ApiService,
+          useValue: {
+            getMyTicket: () =>
+              of({
+                winner1: '',
+                top_scorer: '',
+                player_name: 'Test',
+                editable_matches: [],
+              }),
+          },
+        },
+        { provide: AuthService, useValue: { isLoggedIn: () => true } },
         { provide: MatDialog, useValue: { open: () => ({ afterClosed: () => of(false) }) } },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FormComponent);
+    fixture = TestBed.createComponent(MyTicketComponent);
     component = fixture.componentInstance;
     await component.ngOnInit();
     fixture.detectChanges();

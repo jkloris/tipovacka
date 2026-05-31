@@ -26,12 +26,13 @@
 
     <div class="matches">
         <mat-list>
-            <div *ngFor="let match of matches" [ngClass]="{'played-matched': match.home_score >= 0}" >
+            <div *ngFor="let match of matches" [ngClass]="{'played-matched': match.home_score != null}" >
                 <mat-list-item >
                     <div class="match" >
                         <p>{{match.home}}</p>
-                        <p>{{match.home_score >= 0 ? match.home_score:'-'}} : {{match.away_score >= 0 ? match.away_score:'-'}}</p>
+                        <p>{{match.home_score != null ? match.home_score : '-'}} : {{match.away_score != null ? match.away_score : '-'}}</p>
                         <p>{{match.away}}</p>
+                        <!-- <p class="kickoff" *ngIf="match.kickoff_at">{{ match.kickoff_at | date:'dd.MM.yyyy HH:mm' }} UTC</p> -->
                     </div>
                 </mat-list-item>
                 <mat-divider ></mat-divider>

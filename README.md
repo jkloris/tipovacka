@@ -39,10 +39,11 @@ Open http://localhost:4200 (proxies `/api` to port 8000).
 
 | Table | Columns |
 |-------|---------|
+| `matches` | `match_number`, `home`, `away`, `kickoff_at`, `home_score`, `away_score` (NULL until played) |
 | `tickets` | `id`, `user_id`, `winner1`, `winner2`, `top_scorer` |
 | `predictions` | `id`, `ticket_id`, `match_id`, `home_score`, `away_score` |
 
-After schema changes, delete `data/tipovacka.db` and restart the API to re-seed.
+Matches are seeded from [`Backend/app/seed_matches.py`](Backend/app/seed_matches.py) (explicit inserts). To regenerate from the CSV after schedule changes: `python Backend/scripts/gen_seed_matches.py`. After schema changes, delete `data/tipovacka.db` and restart the API to re-seed.
 
 ## Environment
 

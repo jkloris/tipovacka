@@ -5,9 +5,30 @@ from app.auth_utils import get_current_user
 from app.database import get_db
 from app.match_lookup import find_match_by_key
 from app.models import Prediction, Ticket, User
-from app.schemas import TicketSubmit
+from app.schemas import EditableMatchOut, MyTicketOut, PredictionUpdate, TicketSubmit
+from app.services import get_my_ticket, upsert_prediction
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
+
+
+@router.get("/me", response_model=MyTicketOut)
+def my_ticket(
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    return get_my_ticket(db, user)
+
+
+@router.put("/me/predictions", response_model=EditableMatchOut)
+def save_prediction(
+    body: PredictionUpdate,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    try:
+        return upsert_prediction(db, user, body.match_id, body.home_score, body.away_score)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @router.post("")
