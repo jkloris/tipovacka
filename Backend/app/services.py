@@ -9,6 +9,7 @@ from app.scoring import (
     get_match_key,
     match_is_played,
 )
+from app.match_editing import is_prediction_editable, lock_reason
 from app.match_lookup import find_match_by_key
 from app.schemas import (
     EditableMatchOut,
@@ -196,6 +197,7 @@ def get_my_ticket(db: Session, user: User) -> MyTicketOut:
                 prediction_home=ph,
                 prediction_away=pa,
                 filled=ph is not None and pa is not None,
+                editable=is_prediction_editable(m.kickoff_at),
             )
         )
 
@@ -220,6 +222,10 @@ def upsert_prediction(
         raise ValueError(f"Unknown match: {match_key}")
     if match.home_score is not None:
         raise ValueError("Match already played")
+    if not is_prediction_editable(match.kickoff_at):
+        raise ValueError(
+            "Predictions are locked from 1 hour before kickoff"
+        )
 
     ticket = db.query(Ticket).filter(Ticket.user_id == user.id).first()
     if not ticket:
@@ -264,4 +270,5 @@ def upsert_prediction(
         prediction_home=home_score,
         prediction_away=away_score,
         filled=True,
+        editable=is_prediction_editable(match.kickoff_at),
     )

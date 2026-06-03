@@ -22,14 +22,15 @@
       @for (m of matches; track m.match_id) {
         <div
           class="match-row"
-          [class.unfilled]="isUnfilled(m)"
-          [class.filled]="m.filled"
+          [class.unfilled]="isUnfilled(m) && !isLocked(m)"
+          [class.filled]="m.filled && !isLocked(m)"
+          [class.locked]="isLocked(m)"
           [class.saving]="savingMatchId === m.match_id"
         >
           <div class="match-meta">
             <span class="match-num">#{{ m.match_number }}</span>
             @if (m.kickoff_at) {
-              <span class="kickoff">{{ m.kickoff_at | date: 'dd.MM.yyyy HH:mm' }} UTC</span>
+            <span class="kickoff">{{ getDate(m) }} </span>
             }
           </div>
           <div class="match-inputs">
@@ -41,6 +42,7 @@
                 min="0"
                 [(ngModel)]="scores[m.match_id].home"
                 [ngModelOptions]="{ standalone: true }"
+                [disabled]="isLocked(m)"
                 (blur)="onScoreBlur(m)"
               />
             </mat-form-field>
@@ -53,11 +55,14 @@
                 min="0"
                 [(ngModel)]="scores[m.match_id].away"
                 [ngModelOptions]="{ standalone: true }"
+                [disabled]="isLocked(m)"
                 (blur)="onScoreBlur(m)"
               />
             </mat-form-field>
           </div>
-          @if (savingMatchId === m.match_id) {
+          @if (isLocked(m)) {
+            <span class="status locked-label">{{ lockLabel(m) }}</span>
+          } @else if (savingMatchId === m.match_id) {
             <span class="status saving-label">Ukladám…</span>
           } @else if (savedMatchId === m.match_id) {
             <span class="status saved-label">Uložené</span>

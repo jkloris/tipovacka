@@ -104,3 +104,13 @@ mat-spinner {
 .saving-label {
   color: #90caf9;
 }
+
+.match-row.locked {
+  border-color: #9e9e9e;
+  background: #252525;
+  opacity: 0.85;
+}
+
+.locked-label {
+  color: #bdbdbd;
+}

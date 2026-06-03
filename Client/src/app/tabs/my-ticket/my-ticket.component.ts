@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
@@ -108,8 +109,56 @@ export class MyTicketComponent implements OnInit {
     return !match.filled;
   }
 
+  isLocked(match: EditableMatchDto): boolean {
+    if (match.editable === false) {
+      return true;
+    }
+    if (!match.kickoff_at) {
+      return false;
+    }
+    const kickoffMs = this.parseKickoffUtcMs(match.kickoff_at);
+    const now = Date.now();
+    const lockFromMs = kickoffMs - 60 * 60 * 1000;
+    return now >= lockFromMs;
+  }
+
+  /** kickoff_at from API is UTC (with Z suffix). */
+  private parseKickoffUtcMs(iso: string): number {
+    const normalized =
+      iso.endsWith('Z') || iso.includes('+') ? iso : `${iso}Z`;
+    return Date.parse(normalized);
+  }
+
+  lockLabel(match: EditableMatchDto): string {
+    if (!match.kickoff_at) {
+      return 'Uzamknuté';
+    }
+    const kickoffMs = this.parseKickoffUtcMs(match.kickoff_at);
+    if (Date.now() >= kickoffMs) {
+      return 'Uzamknuté (zápas už začal)';
+    }
+    return 'Uzamknuté (1 h pred výkopom)';
+  }
+
+  getDate(match: EditableMatchDto): string | null {
+    if (!match.kickoff_at) {
+      return null;
+    }
+    return new Date(match.kickoff_at).toLocaleDateString('sk-SK', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
   async onScoreBlur(match: EditableMatchDto): Promise<void> {
     if (!(await this.ensureLoggedIn())) {
+      return;
+    }
+
+    if (this.isLocked(match)) {
       return;
     }
 
@@ -153,8 +202,13 @@ export class MyTicketComponent implements OnInit {
           this.savedMatchId = null;
         }
       }, 2000);
-    } catch {
-      this.error = `Uloženie zápasu ${match.home} vs ${match.away} zlyhalo.`;
+    } catch (err: unknown) {
+      const detail =
+        err instanceof HttpErrorResponse
+          ? (err.error?.detail as string | undefined)
+          : undefined;
+      this.error =
+        detail || `Uloženie zápasu ${match.home} vs ${match.away} zlyhalo.`;
     } finally {
       this.savingMatchId = null;
     }

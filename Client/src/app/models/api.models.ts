@@ -42,6 +42,7 @@ export interface EditableMatchDto {
   prediction_home: number | null;
   prediction_away: number | null;
   filled: boolean;
+  editable: boolean;
 }
 
 export interface MyTicketDto {

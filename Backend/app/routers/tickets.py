@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.auth_utils import get_current_user
 from app.database import get_db
+from app.match_editing import is_prediction_editable, lock_reason
 from app.match_lookup import find_match_by_key
 from app.models import Prediction, Ticket, User
 from app.schemas import EditableMatchOut, MyTicketOut, PredictionUpdate, TicketSubmit
@@ -62,6 +63,12 @@ def submit_ticket(
         match = find_match_by_key(db, match_key)
         if not match:
             raise HTTPException(status_code=400, detail=f"Unknown match: {match_key}")
+        if not is_prediction_editable(match.kickoff_at):
+            raise HTTPException(
+                status_code=403,
+                detail=lock_reason(match.kickoff_at)
+                or "Predictions are locked",
+            )
 
         home_score = int(scores.get("homeScore", scores.get("home_score", 0)))
         away_score = int(scores.get("awayScore", scores.get("away_score", 0)))

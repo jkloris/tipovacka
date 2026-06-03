@@ -1,9 +1,13 @@
+from datetime import datetime, timedelta, timezone
+
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.models import Match, User
 from app.seed_matches import MATCH_SEEDS
+
+TEST_MATCH_NUMBER = 996
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -34,8 +38,6 @@ def seed_database(db: Session) -> None:
                 sort_order=match_number,
             )
         )
-    db.flush()
-
     password_hash = pwd_context.hash(settings.seed_password)
     for username, player_name in DEFAULT_USERS:
         db.add(
@@ -46,4 +48,29 @@ def seed_database(db: Session) -> None:
             )
         )
 
+    db.commit()
+
+
+def ensure_test_match(db: Session) -> None:
+    """Add test match #999 once (kickoff now+2h UTC). Kickoff is not reset on restart."""
+    existing = (
+        db.query(Match).filter(Match.match_number == TEST_MATCH_NUMBER).first()
+    )
+    if existing:
+        return
+
+    test_kickoff = datetime.now(timezone.utc) + timedelta(
+        minutes=2
+    )
+    db.add(
+        Match(
+            match_number=TEST_MATCH_NUMBER,
+            home="Test Homea",
+            away="Test Away",
+            kickoff_at=test_kickoff,
+            home_score=None,
+            away_score=None,
+            sort_order=0,
+        )
+    )
     db.commit()

@@ -1,6 +1,12 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
+
+
+def _serialize_utc_datetime(value: datetime | None) -> str | None:
+    if value is None:
+        return None
+    return value.isoformat() + "Z"
 
 
 class TokenResponse(BaseModel):
@@ -29,6 +35,10 @@ class MatchOut(BaseModel):
     match_id: str
 
     model_config = {"from_attributes": True}
+
+    @field_serializer("kickoff_at")
+    def serialize_kickoff(self, value: datetime | None) -> str | None:
+        return _serialize_utc_datetime(value)
 
 
 class LeaderboardEntry(BaseModel):
@@ -76,6 +86,11 @@ class EditableMatchOut(BaseModel):
     prediction_home: int | None = None
     prediction_away: int | None = None
     filled: bool
+    editable: bool = True
+
+    @field_serializer("kickoff_at")
+    def serialize_kickoff(self, value: datetime | None) -> str | None:
+        return _serialize_utc_datetime(value)
 
 
 class MyTicketOut(BaseModel):

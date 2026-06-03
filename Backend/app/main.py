@@ -8,7 +8,7 @@ from sqlalchemy import inspect
 from app.config import settings
 from app.database import Base, SessionLocal, engine
 from app.routers import auth, matches, players, tickets
-from app.seed import seed_database
+from app.seed import ensure_test_match, seed_database
 
 
 def _needs_schema_reset() -> bool:
@@ -39,6 +39,7 @@ async def lifespan(_app: FastAPI):
     db = SessionLocal()
     try:
         seed_database(db)
+        # ensure_test_match(db)
     finally:
         db.close()
     yield
