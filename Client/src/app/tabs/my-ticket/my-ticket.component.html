@@ -42,7 +42,7 @@
                 min="0"
                 [(ngModel)]="scores[m.match_id].home"
                 [ngModelOptions]="{ standalone: true }"
-                [disabled]="isLocked(m)"
+                [readonly]="isLocked(m)"
                 (blur)="onScoreBlur(m)"
               />
             </mat-form-field>
@@ -55,7 +55,7 @@
                 min="0"
                 [(ngModel)]="scores[m.match_id].away"
                 [ngModelOptions]="{ standalone: true }"
-                [disabled]="isLocked(m)"
+                [readonly]="isLocked(m)"
                 (blur)="onScoreBlur(m)"
               />
             </mat-form-field>

@@ -60,7 +60,8 @@ def ensure_test_match(db: Session) -> None:
         return
 
     test_kickoff = datetime.now(timezone.utc) + timedelta(
-        minutes=2
+        hours=1,
+        minutes=1
     )
     db.add(
         Match(
