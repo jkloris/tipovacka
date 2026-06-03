@@ -18,6 +18,55 @@
       <p class="error">{{ error }}</p>
     }
 
+    <div class="ticket-info">
+      <div class="ticket-info-row">
+        <mat-form-field appearance="fill" class="info-field">
+          <mat-label>Celkový víťaz</mat-label>
+          <input
+            matInput
+            [(ngModel)]="ticket.winner1"
+            [ngModelOptions]="{ standalone: true }"
+            required
+          />
+        </mat-form-field>
+        <!-- TODO show later -->
+          <!-- <mat-form-field appearance="fill" class="info-field">
+            <mat-label>Celkový víťaz, druhý tip</mat-label>
+            <input
+            matInput
+            [(ngModel)]="ticket.winner2"
+            [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field> -->
+      </div>
+      <div class="ticket-info-row">
+        <mat-form-field appearance="fill" class="info-field full-width">
+          <mat-label>Najlepší strelec</mat-label>
+          <input
+            matInput
+            [(ngModel)]="ticket.top_scorer"
+            [ngModelOptions]="{ standalone: true }"
+            required
+          />
+        </mat-form-field>
+      </div>
+      <div class="ticket-info-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="saveTicketInfo()"
+          [disabled]="!ticketInfoChanged || savingInfo"
+        >
+          {{ savingInfo ? 'Ukladám…' : 'Uložiť tipy' }}
+        </button>
+        <span class="status saved-label" *ngIf="infoSaved">Uložené</span>
+      </div>
+      <p class="hint" *ngIf="!hasTicketInfo">
+        Vyplň celkového víťaza a najlepšieho strelca pred vyplnením zápasov.
+      </p>
+      <p class="error" *ngIf="infoError">{{ infoError }}</p>
+    </div>
+
     <div class="matches">
       @for (m of matches; track m.match_id) {
         <div
@@ -42,7 +91,7 @@
                 min="0"
                 [(ngModel)]="scores[m.match_id].home"
                 [ngModelOptions]="{ standalone: true }"
-                [readonly]="isLocked(m)"
+                [readonly]="isLocked(m) || !hasSavedTicketInfo"
                 (blur)="onScoreBlur(m)"
               />
             </mat-form-field>
@@ -55,7 +104,7 @@
                 min="0"
                 [(ngModel)]="scores[m.match_id].away"
                 [ngModelOptions]="{ standalone: true }"
-                [readonly]="isLocked(m)"
+                [readonly]="isLocked(m) || !hasSavedTicketInfo"
                 (blur)="onScoreBlur(m)"
               />
             </mat-form-field>

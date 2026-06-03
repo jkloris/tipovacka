@@ -238,6 +238,11 @@ def upsert_prediction(
         db.add(ticket)
         db.flush()
 
+    if not ticket.winner1.strip() or not ticket.top_scorer.strip():
+        raise ValueError(
+            "Predikcie zápasov je potrebné zadať až po vyplnení celkového víťaza a najlepšieho strelca."
+        )
+
     pred = (
         db.query(Prediction)
         .filter(

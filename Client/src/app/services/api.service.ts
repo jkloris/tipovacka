@@ -49,6 +49,14 @@ export class ApiService {
     );
   }
 
+  saveTicketInfo(payload: {
+    winner1: string;
+    winner2?: string | null;
+    top_scorer: string;
+  }): Observable<MyTicketDto> {
+    return this.http.put<MyTicketDto>(`${environment.apiUrl}/tickets/me`, payload);
+  }
+
   submitTicket(payload: TicketSubmitPayload): Observable<{ ok: boolean; player: string }> {
     return this.http.post<{ ok: boolean; player: string }>(
       `${environment.apiUrl}/tickets`,

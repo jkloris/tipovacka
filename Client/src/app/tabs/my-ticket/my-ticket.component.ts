@@ -36,11 +36,15 @@ export class MyTicketComponent implements OnInit {
   loading = false;
   savingMatchId: string | null = null;
   savedMatchId: string | null = null;
+  savingInfo = false;
+  infoSaved = false;
   error: string | null = null;
+  infoError: string | null = null;
 
   ticket: MyTicketDto | null = null;
   scores: Record<string, ScoreEntry> = {};
   private lastSaved = new Map<string, string>();
+  private originalTicketInfo = { winner1: '', winner2: null as string | null, top_scorer: '' };
 
   constructor(
     public auth: AuthService,
@@ -74,6 +78,75 @@ export class MyTicketComponent implements OnInit {
     return ok;
   }
 
+  get hasTicketInfo(): boolean {
+    return (
+      !!this.ticket &&
+      this.ticket.winner1.trim() !== '' &&
+      this.ticket.top_scorer.trim() !== ''
+    );
+  }
+
+  get hasSavedTicketInfo(): boolean {
+    return this.hasTicketInfo && !this.ticketInfoChanged;
+  }
+
+  get ticketInfoChanged(): boolean {
+    if (!this.ticket) {
+      return false;
+    }
+    return (
+      this.ticket.winner1.trim() !== this.originalTicketInfo.winner1.trim() ||
+      (this.ticket.winner2 ?? '').trim() !==
+        (this.originalTicketInfo.winner2 ?? '').trim() ||
+      this.ticket.top_scorer.trim() !== this.originalTicketInfo.top_scorer.trim()
+    );
+  }
+
+  async saveTicketInfo(): Promise<void> {
+    if (!(await this.ensureLoggedIn()) || !this.ticket) {
+      return;
+    }
+    const winner1 = this.ticket.winner1?.trim() ?? '';
+    const top_scorer = this.ticket.top_scorer?.trim() ?? '';
+    if (!winner1 || !top_scorer) {
+      this.infoError =
+        'Celkový víťaz a najlepší strelec sú povinné pred uložením tiketových predikcií.';
+      return;
+    }
+
+    this.infoError = null;
+    this.savingInfo = true;
+    this.infoSaved = false;
+
+    try {
+      this.ticket = await firstValueFrom(
+        this.api.saveTicketInfo({
+          winner1,
+          winner2: this.ticket.winner2 ?? null,
+          top_scorer,
+        })
+      );
+      this.originalTicketInfo = {
+        winner1: this.ticket.winner1 || '',
+        winner2: this.ticket.winner2 ?? null,
+        top_scorer: this.ticket.top_scorer || '',
+      };
+      this.infoSaved = true;
+      setTimeout(() => {
+        this.infoSaved = false;
+      }, 2000);
+    } catch (err: unknown) {
+      const detail =
+        err instanceof HttpErrorResponse
+          ? (err.error?.detail as string | undefined)
+          : undefined;
+      this.infoError =
+        detail || 'Uloženie tiketových údajov zlyhalo. Skúste to znova.';
+    } finally {
+      this.savingInfo = false;
+    }
+  }
+
   async loadTicket(): Promise<void> {
     if (!this.auth.isLoggedIn()) {
       return;
@@ -82,6 +155,11 @@ export class MyTicketComponent implements OnInit {
     this.error = null;
     try {
       this.ticket = await firstValueFrom(this.api.getMyTicket());
+      this.originalTicketInfo = {
+        winner1: this.ticket.winner1 || '',
+        winner2: this.ticket.winner2 ?? null,
+        top_scorer: this.ticket.top_scorer || '',
+      };
       this.scores = {};
       this.lastSaved.clear();
       for (const m of this.ticket.editable_matches) {
@@ -155,6 +233,12 @@ export class MyTicketComponent implements OnInit {
 
   async onScoreBlur(match: EditableMatchDto): Promise<void> {
     if (!(await this.ensureLoggedIn())) {
+      return;
+    }
+
+    if (!this.hasSavedTicketInfo) {
+      this.error =
+        'Predikcie zápasov je možné zadávať až po uložení celkového víťaza a najlepšieho strelca.';
       return;
     }
 

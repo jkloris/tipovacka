@@ -72,6 +72,14 @@ class TicketSubmit(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class TicketInfoUpdate(BaseModel):
+    winner1: str
+    winner2: str | None = None
+    top_scorer: str
+
+    model_config = {"populate_by_name": True}
+
+
 class UserOut(BaseModel):
     username: str
     player_name: str | None
