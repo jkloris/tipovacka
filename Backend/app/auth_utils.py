@@ -24,6 +24,10 @@ def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
 
 
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
+
+
 def hash_token(token: str) -> str:
     return hashlib.sha256(token.encode()).hexdigest()
 
@@ -80,6 +84,8 @@ def get_current_user(
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
+    if not user.is_admin and not user.is_validated:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account pending approval")
     return user
 
 

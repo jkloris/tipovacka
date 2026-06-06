@@ -2,12 +2,12 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    database_url: str = "sqlite:////data/tipovacka.db"
-    jwt_secret: str = "change-me-in-production"
+    database_url: str
+    jwt_secret: str
     jwt_access_minutes: int = 60
     jwt_refresh_days: int = 30
-    cors_origins: str = "http://localhost:4200,http://localhost"
-    seed_password: str = "tipovacka"
+    cors_origins: str = ""
+    seed_password: str | None = None
 
     class Config:
         env_file = ".env"

@@ -78,15 +78,7 @@ def submit_ticket(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    name = body.your_name.strip()
-    if not name:
-        raise HTTPException(status_code=400, detail="Name is required")
-
-    if user.player_name and user.player_name.lower() != name.lower():
-        raise HTTPException(
-            status_code=400,
-            detail="Name must match your account player name",
-        )
+    name = user.username
 
     ticket = db.query(Ticket).filter(Ticket.user_id == user.id).first()
     if not ticket:
@@ -134,8 +126,5 @@ def submit_ticket(
                 )
             )
 
-    if not user.player_name:
-        user.player_name = name
-
     db.commit()
-    return {"ok": True, "player": user.player_name or name}
+    return {"ok": True, "player": name}

@@ -20,7 +20,6 @@ describe('MyTicketComponent', () => {
               of({
                 winner1: '',
                 top_scorer: '',
-                player_name: 'Test',
                 editable_matches: [
                   {
                     match_id: '999',

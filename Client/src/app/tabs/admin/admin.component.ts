@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../services/api.service';
-import { MatchDto, SettingsDto } from '../../models/api.models';
+import { MatchDto, PendingUserDto, SettingsDto } from '../../models/api.models';
 
 @Component({
   selector: 'app-admin',
@@ -38,6 +38,10 @@ export class AdminComponent implements OnInit {
   creatingMatch = false;
   error: string | null = null;
 
+  pendingUsers: PendingUserDto[] = [];
+  approvingUser: number | null = null;
+  deletingUser: number | null = null;
+
   settings: SettingsDto = {
     show_second_winner: true,
     winner_info_readonly: false,
@@ -58,7 +62,16 @@ export class AdminComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.loadAdminSettings();
+    await this.loadPendingUsers();
     await this.loadMatches();
+  }
+
+  async loadPendingUsers(): Promise<void> {
+    try {
+      this.pendingUsers = await firstValueFrom(this.api.getPendingUsers());
+    } catch {
+      this.error = 'Nepodarilo sa načítať čakajúcich používateľov.';
+    }
   }
 
   async loadAdminSettings(): Promise<void> {
@@ -138,6 +151,35 @@ export class AdminComponent implements OnInit {
       await this.loadMatches();
     } catch {
       this.error = `Nepodarilo sa odstrániť zápas ${matchNumber}.`;
+    }
+  }
+
+  async approveUser(userId: number): Promise<void> {
+    this.error = null;
+    this.approvingUser = userId;
+    try {
+      await firstValueFrom(this.api.approveUser(userId));
+      await this.loadPendingUsers();
+    } catch {
+      this.error = `Nepodarilo sa schváliť používateľa ${userId}.`;
+    } finally {
+      this.approvingUser = null;
+    }
+  }
+
+  async deletePendingUser(userId: number): Promise<void> {
+    if (!confirm('Naozaj odstrániť tento čakajúci účet?')) {
+      return;
+    }
+    this.error = null;
+    this.deletingUser = userId;
+    try {
+      await firstValueFrom(this.api.deletePendingUser(userId));
+      await this.loadPendingUsers();
+    } catch {
+      this.error = `Nepodarilo sa odstrániť používateľa ${userId}.`;
+    } finally {
+      this.deletingUser = null;
     }
   }
 

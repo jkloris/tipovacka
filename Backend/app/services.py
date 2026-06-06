@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session, joinedload
 
+from app.auth_utils import hash_password
 from app.models import Match, Prediction, Setting, Ticket, User
 from app.scoring import (
     MatchData,
@@ -145,13 +146,13 @@ def get_leaderboard(db: Session) -> list[LeaderboardEntry]:
     users = (
         db.query(User)
         .options(joinedload(User.ticket).joinedload(Ticket.predictions).joinedload(Prediction.match))
-        .filter(User.player_name.isnot(None))
         .filter(User.is_admin.is_(False))
+        .filter(User.is_validated.is_(True))
         .all()
     )
 
     for user in users:
-        name = user.player_name or user.username
+        name = user.username
         if not user.ticket:
             entries.append(LeaderboardEntry(name=name, points=0))
             continue
@@ -163,8 +164,8 @@ def get_leaderboard(db: Session) -> list[LeaderboardEntry]:
     return entries
 
 
-def get_player_ticket(db: Session, player_name: str) -> TicketOut | None:
-    user = db.query(User).filter(User.player_name == player_name).first()
+def get_player_ticket(db: Session, username: str) -> TicketOut | None:
+    user = db.query(User).filter(User.username == username).first()
     if not user or not user.ticket:
         return None
 
@@ -265,7 +266,6 @@ def get_my_ticket(db: Session, user: User) -> MyTicketOut:
         winner1=ticket.winner1 if ticket else "",
         winner2=ticket.winner2 if ticket else None,
         top_scorer=ticket.top_scorer if ticket else "",
-        player_name=user.player_name,
         editable_matches=editable,
     )
 
@@ -337,6 +337,56 @@ def upsert_prediction(
         filled=True,
         editable=is_prediction_editable(match.kickoff_at),
     )
+
+
+def register_user(db: Session, username: str, password: str) -> User:
+    existing = db.query(User).filter(User.username == username).first()
+    if existing:
+        raise ValueError(f"Username {username} is already taken")
+    user = User(
+        username=username,
+        password_hash=hash_password(password),
+        is_admin=False,
+        is_validated=False,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def get_pending_users(db: Session) -> list[User]:
+    return (
+        db.query(User)
+        .filter(User.is_admin.is_(False))
+        .filter(User.is_validated.is_(False))
+        .order_by(User.username)
+        .all()
+    )
+
+
+def approve_user_by_id(db: Session, user_id: int) -> User:
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise ValueError(f"User {user_id} not found")
+    user.is_validated = True
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def delete_pending_user_by_id(db: Session, user_id: int) -> None:
+    user = (
+        db.query(User)
+        .filter(User.id == user_id)
+        .filter(User.is_admin.is_(False))
+        .filter(User.is_validated.is_(False))
+        .first()
+    )
+    if not user:
+        raise ValueError(f"Pending user {user_id} not found")
+    db.delete(user)
+    db.commit()
 
 
 def delete_match(db: Session, match_number: int) -> None:

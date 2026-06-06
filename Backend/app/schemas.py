@@ -24,6 +24,11 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class RegisterRequest(BaseModel):
+    username: str
+    password: str
+
+
 class MatchOut(BaseModel):
     id: int
     match_number: int
@@ -110,8 +115,17 @@ class MatchResultUpdate(BaseModel):
 
 class UserOut(BaseModel):
     username: str
-    player_name: str | None
     is_admin: bool = False
+    is_validated: bool = False
+
+
+class PendingUserOut(BaseModel):
+    id: int
+    username: str
+    is_admin: bool = False
+    is_validated: bool = False
+
+    model_config = {"from_attributes": True}
 
 
 class EditableMatchOut(BaseModel):
@@ -134,7 +148,6 @@ class MyTicketOut(BaseModel):
     winner1: str
     winner2: str | None = None
     top_scorer: str
-    player_name: str | None
     editable_matches: list[EditableMatchOut]
 
 

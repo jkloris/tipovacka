@@ -7,6 +7,7 @@ import {
   LeaderboardEntry,
   MatchDto,
   MyTicketDto,
+  PendingUserDto,
   PredictionUpdatePayload,
   SettingsDto,
   TicketDto,
@@ -99,6 +100,18 @@ export class ApiService {
 
   deleteMatch(matchNumber: number): Observable<{ ok: boolean }> {
     return this.http.delete<{ ok: boolean }>(`${environment.apiUrl}/admin/matches/${matchNumber}`);
+  }
+
+  getPendingUsers(): Observable<PendingUserDto[]> {
+    return this.http.get<PendingUserDto[]>(`${environment.apiUrl}/admin/pending-users`);
+  }
+
+  approveUser(userId: number): Observable<PendingUserDto> {
+    return this.http.post<PendingUserDto>(`${environment.apiUrl}/admin/users/${userId}/approve`, {});
+  }
+
+  deletePendingUser(userId: number): Observable<{ ok: boolean }> {
+    return this.http.delete<{ ok: boolean }>(`${environment.apiUrl}/admin/users/${userId}`);
   }
 
   submitTicket(payload: TicketSubmitPayload): Observable<{ ok: boolean; player: string }> {

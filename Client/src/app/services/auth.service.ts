@@ -63,6 +63,20 @@ export class AuthService {
     }
   }
 
+  async register(username: string, password: string): Promise<boolean> {
+    try {
+      await firstValueFrom(
+        this.http.post<{ ok: boolean }>(`${environment.apiUrl}/auth/register`, {
+          username,
+          password,
+        })
+      );
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   async loadMe(): Promise<void> {
     try {
       const user = await firstValueFrom(

@@ -27,7 +27,7 @@ def _needs_schema_reset() -> bool:
     if "users" not in tables:
         return True
     cols = {c["name"] for c in inspector.get_columns("users")}
-    if "is_admin" not in cols:
+    if "is_admin" not in cols or "is_validated" not in cols:
         return True
     if "setting" not in tables:
         return True

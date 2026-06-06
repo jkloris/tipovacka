@@ -12,14 +12,9 @@ TEST_MATCH_NUMBER = 996
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 DEFAULT_USERS = [
-    ("admin", "Admin", True),
-    ("ondro", "Ondro", False),
-    ("jergi", "Jergi", False),
-    ("kubo", "Kubo", False),
-    ("tabi", "Tabi", False),
-    ("ivo", "Ivo", False),
-    ("plcho", "Plcho", False),
-    ("mato", "Mato", False),
+    ("admin", True),
+    ("ondro", False),
+    ("jergi", False),
 ]
 
 
@@ -40,13 +35,13 @@ def seed_database(db: Session) -> None:
             )
         )
     password_hash = pwd_context.hash(settings.seed_password)
-    for username, player_name, is_admin in DEFAULT_USERS:
+    for username, is_admin in DEFAULT_USERS:
         db.add(
             User(
                 username=username,
                 password_hash=password_hash,
-                player_name=player_name,
                 is_admin=is_admin,
+                is_validated=True,
             )
         )
     db.add(Setting(show_second_winner=False, winner_info_readonly=False))

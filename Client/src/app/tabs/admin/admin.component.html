@@ -18,6 +18,36 @@
   </div>
 
   <div class="section">
+    <h2>Čakajúci používatelia</h2>
+    <div *ngIf="pendingUsers.length; else noPending">
+      <div class="pending-user" *ngFor="let user of pendingUsers">
+        <div>{{ user.username }}</div>
+        <div class="pending-actions">
+          <button
+            mat-mini-button
+            color="primary"
+            (click)="approveUser(user.id)"
+            [disabled]="approvingUser === user.id || deletingUser === user.id"
+          >
+            {{ approvingUser === user.id ? 'Schvaľujem…' : 'Schváliť' }}
+          </button>
+          <button
+            mat-mini-button
+            color="warn"
+            (click)="deletePendingUser(user.id)"
+            [disabled]="approvingUser === user.id || deletingUser === user.id"
+          >
+            {{ deletingUser === user.id ? 'Odstraňujem…' : 'Zmazať' }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noPending>
+      <p>Žiadne čakajúce používateľské účty.</p>
+    </ng-template>
+  </div>
+
+  <div class="section">
     <h2>Pridať nový zápas</h2>
     <div class="form-row">
       <mat-form-field appearance="fill">

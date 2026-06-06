@@ -7,11 +7,20 @@ from app.schemas import (
     AddMatchRequest,
     MatchOut,
     MatchResultUpdate,
+    PendingUserOut,
     SettingsOut,
     SettingsUpdate,
 )
-from app.services import add_match, get_settings, save_settings, update_match_result
-from app.services import delete_match
+from app.services import (
+    add_match,
+    approve_user_by_id,
+    delete_match,
+    delete_pending_user_by_id,
+    get_pending_users,
+    get_settings,
+    save_settings,
+    update_match_result,
+)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -74,6 +83,54 @@ def remove_match(
 ):
     try:
         delete_match(db, match_number)
+        return {"ok": True}
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.get("/pending-users", response_model=list[PendingUserOut])
+def get_pending_users_route(
+    user=Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    pending = get_pending_users(db)
+    return [
+        PendingUserOut(
+            id=u.id,
+            username=u.username,
+            is_admin=u.is_admin,
+            is_validated=u.is_validated,
+        )
+        for u in pending
+    ]
+
+
+@router.post("/users/{user_id}/approve", response_model=PendingUserOut)
+def approve_user(
+    user_id: int,
+    user=Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        approved = approve_user_by_id(db, user_id)
+        return PendingUserOut(
+            id=approved.id,
+            username=approved.username,
+            is_admin=approved.is_admin,
+            is_validated=approved.is_validated,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.delete("/users/{user_id}")
+def delete_pending_user(
+    user_id: int,
+    user=Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        delete_pending_user_by_id(db, user_id)
         return {"ok": True}
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc

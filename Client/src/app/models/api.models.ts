@@ -49,7 +49,6 @@ export interface MyTicketDto {
   winner1: string;
   winner2?: string | null;
   top_scorer: string;
-  player_name: string | null;
   editable_matches: EditableMatchDto[];
 }
 
@@ -72,6 +71,13 @@ export interface TokenResponse {
 
 export interface UserDto {
   username: string;
-  player_name: string | null;
   is_admin: boolean;
+  is_validated?: boolean;
+}
+
+export interface PendingUserDto {
+  id: number;
+  username: string;
+  is_admin: boolean;
+  is_validated: boolean;
 }

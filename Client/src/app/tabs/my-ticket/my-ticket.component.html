@@ -11,7 +11,7 @@
     <button mat-button (click)="loadTicket()">Skúsiť znova</button>
   } @else if (ticket) {
     <p class="summary">
-      {{ ticket.player_name || auth.currentUser()?.username }} —
+      {{ auth.currentUser()?.username }} —
       vyplnených {{ filledCount }} / {{ matches.length }} zápasov
     </p>
     @if (error) {
