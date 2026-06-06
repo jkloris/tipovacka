@@ -17,6 +17,10 @@ html, body { height: 100%; }
 body { 
     margin: 0; 
     font-family: Roboto, "Helvetica Neue", sans-serif; 
-    background-image: url('../public/euro_bg.webp');
+    background-image: url('../public/wc2026_bg_3.png');
     background-size: cover;
+}
+
+.mdc-form-field>label {
+  color: white;
 }

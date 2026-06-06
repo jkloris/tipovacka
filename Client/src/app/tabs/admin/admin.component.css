@@ -25,6 +25,12 @@ h2 {
   background: #1e1e1e;
 }
 
+
+.settings {
+  display: flex;
+  flex-direction: column;
+}
+
 .form-row {
   display: flex;
   flex-wrap: wrap;

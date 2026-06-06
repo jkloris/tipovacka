@@ -3,12 +3,15 @@
 
   <div class="section">
     <h2>Nastavenia</h2>
-    <mat-checkbox [(ngModel)]="settings.show_second_winner" [ngModelOptions]="{ standalone: true }">
-      Zobraziť druhý tip na víťaza
-    </mat-checkbox>
-    <mat-checkbox [(ngModel)]="settings.winner_info_readonly" [ngModelOptions]="{ standalone: true }">
-      Uzamknúť úpravu víťaza a najlepšieho strelca
-    </mat-checkbox>
+    <div class="settings">
+
+      <mat-checkbox class="checkbox" [(ngModel)]="settings.show_second_winner" [ngModelOptions]="{ standalone: true }">
+        Zobraziť druhý tip na víťaza
+      </mat-checkbox>
+      <mat-checkbox class="checkbox" [(ngModel)]="settings.winner_info_readonly" [ngModelOptions]="{ standalone: true }">
+        Uzamknúť úpravu víťaza a najlepšieho strelca
+      </mat-checkbox>
+    </div>
     <button mat-raised-button color="primary" (click)="saveSettings()" [disabled]="savingSettings">
       {{ savingSettings ? 'Ukladám…' : 'Uložiť nastavenia' }}
     </button>
@@ -30,10 +33,34 @@
         <input matInput [(ngModel)]="newMatch.away" [ngModelOptions]="{ standalone: true }" />
       </mat-form-field>
     </div>
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Čas výkopu (ISO alebo dátum)</mat-label>
-      <input matInput [(ngModel)]="newMatch.kickoffAt" [ngModelOptions]="{ standalone: true }" />
-    </mat-form-field>
+    <div class="form-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Dátum výkopu</mat-label>
+        <input
+          matInput
+          [matDatepicker]="kickoffDatepicker"
+          [(ngModel)]="newMatch.kickoffDate"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <mat-datepicker-toggle matSuffix [for]="kickoffDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #kickoffDatepicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Čas výkopu</mat-label>
+        <input
+          matInput
+          type="time"
+          [(ngModel)]="newMatch.kickoffTime"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
+    </div>
+
+
+
+
+
     <button mat-raised-button color="primary" (click)="addMatch()" [disabled]="creatingMatch">
       {{ creatingMatch ? 'Pridávam…' : 'Pridať zápas' }}
     </button>

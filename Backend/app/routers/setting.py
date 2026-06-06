@@ -5,7 +5,7 @@ from app.database import get_db
 from app.schemas import SettingsOut
 from app.services import get_settings
 
-router = APIRouter(prefix="/setting", tags=["setting"])
+router = APIRouter(prefix="/settings", tags=["setting"])
 
 
 @router.get("", response_model=SettingsOut)

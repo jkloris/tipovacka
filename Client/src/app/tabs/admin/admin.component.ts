@@ -5,6 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../services/api.service';
@@ -20,6 +23,9 @@ import { MatchDto, SettingsDto } from '../../models/api.models';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
     MatProgressSpinnerModule,
   ],
   templateUrl: './admin.component.html',
@@ -44,7 +50,8 @@ export class AdminComponent implements OnInit {
     matchNumber: 0,
     home: '',
     away: '',
-    kickoffAt: '',
+    kickoffDate: null as Date | null,
+    kickoffTime: '',
   };
 
   constructor(private api: ApiService) {}
@@ -76,6 +83,7 @@ export class AdminComponent implements OnInit {
           awayScore: match.away_score,
         };
       }
+      this.newMatch.matchNumber = this.matches.reduce((acc, match) => { return match.match_number > acc ? match.match_number : acc }, 0) + 1;
     } catch {
       this.error = 'Nepodarilo sa načítať zápasy.';
     } finally {
@@ -125,12 +133,23 @@ export class AdminComponent implements OnInit {
       this.error = 'Zadajte číslo zápasu, domácich aj hostí.';
       return;
     }
+    if (!this.newMatch.kickoffDate) {
+      this.error = 'Vyberte dátum výkopu.';
+      return;
+    }
     this.error = null;
     this.creatingMatch = true;
     try {
-      const kickoffAt = this.newMatch.kickoffAt
-        ? new Date(this.newMatch.kickoffAt).toISOString()
-        : null;
+      const [hours, minutes] = this.newMatch.kickoffTime
+        .split(':')
+        .map((value) => parseInt(value, 10));
+      const kickoffDate = new Date(this.newMatch.kickoffDate);
+      kickoffDate.setHours(Number.isNaN(hours) ? 0 : hours);
+      kickoffDate.setMinutes(Number.isNaN(minutes) ? 0 : minutes);
+      kickoffDate.setSeconds(0);
+      kickoffDate.setMilliseconds(0);
+
+      const kickoffAt = kickoffDate.toISOString();
       await firstValueFrom(
         this.api.createMatch({
           matchNumber: this.newMatch.matchNumber,
@@ -139,7 +158,13 @@ export class AdminComponent implements OnInit {
           kickoffAt,
         })
       );
-      this.newMatch = { matchNumber: 0, home: '', away: '', kickoffAt: '' };
+      this.newMatch = {
+        matchNumber: 0,
+        home: '',
+        away: '',
+        kickoffDate: null,
+        kickoffTime: '',
+      };
       await this.loadMatches();
     } catch {
       this.error = 'Nepodarilo sa pridať zápas.';

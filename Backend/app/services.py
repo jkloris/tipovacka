@@ -235,7 +235,7 @@ def get_my_ticket(db: Session, user: User) -> MyTicketOut:
 
     unplayed = (
         db.query(Match)
-        .filter(Match.home_score.is_(None))
+        # .filter(Match.home_score.is_(None))
         .order_by(Match.sort_order)
         .all()
     )
