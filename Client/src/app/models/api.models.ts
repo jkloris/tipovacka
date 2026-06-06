@@ -53,6 +53,11 @@ export interface MyTicketDto {
   editable_matches: EditableMatchDto[];
 }
 
+export interface SettingsDto {
+  show_second_winner: boolean;
+  winner_info_readonly: boolean;
+}
+
 export interface PredictionUpdatePayload {
   matchId: string;
   homeScore: number;
@@ -68,4 +73,5 @@ export interface TokenResponse {
 export interface UserDto {
   username: string;
   player_name: string | null;
+  is_admin: boolean;
 }

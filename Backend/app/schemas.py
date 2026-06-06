@@ -80,9 +80,38 @@ class TicketInfoUpdate(BaseModel):
     model_config = {"populate_by_name": True}
 
 
+class SettingsOut(BaseModel):
+    show_second_winner: bool
+    winner_info_readonly: bool
+
+
+class SettingsUpdate(BaseModel):
+    show_second_winner: bool
+    winner_info_readonly: bool
+
+    model_config = {"populate_by_name": True}
+
+
+class AddMatchRequest(BaseModel):
+    match_number: int
+    home: str
+    away: str
+    kickoff_at: datetime | None = None
+
+    model_config = {"populate_by_name": True}
+
+
+class MatchResultUpdate(BaseModel):
+    home_score: int
+    away_score: int
+
+    model_config = {"populate_by_name": True}
+
+
 class UserOut(BaseModel):
     username: str
     player_name: str | None
+    is_admin: bool = False
 
 
 class EditableMatchOut(BaseModel):

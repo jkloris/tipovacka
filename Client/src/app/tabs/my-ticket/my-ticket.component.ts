@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { EditableMatchDto, MyTicketDto } from '../../models/api.models';
+import { EditableMatchDto, MyTicketDto, SettingsDto } from '../../models/api.models';
 import { LoginDialogComponent } from '../../auth/login-dialog.component';
 
 interface ScoreEntry {
@@ -43,6 +43,7 @@ export class MyTicketComponent implements OnInit {
 
   ticket: MyTicketDto | null = null;
   scores: Record<string, ScoreEntry> = {};
+  settings: SettingsDto | null = null;
   private lastSaved = new Map<string, string>();
   private originalTicketInfo = { winner1: '', winner2: null as string | null, top_scorer: '' };
 
@@ -53,6 +54,7 @@ export class MyTicketComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    await this.loadSettings();
     if (this.auth.isLoggedIn()) {
       await this.loadTicket();
     }
@@ -60,6 +62,14 @@ export class MyTicketComponent implements OnInit {
 
   get matches(): EditableMatchDto[] {
     return this.ticket?.editable_matches ?? [];
+  }
+
+  get showSecondWinner(): boolean {
+    return this.settings?.show_second_winner ?? true;
+  }
+
+  get winnerInfoReadonly(): boolean {
+    return this.settings?.winner_info_readonly ?? false;
   }
 
   get filledCount(): number {
@@ -90,6 +100,10 @@ export class MyTicketComponent implements OnInit {
     return this.hasTicketInfo && !this.ticketInfoChanged;
   }
 
+  get canEditWinnerInfo(): boolean {
+    return !this.winnerInfoReadonly;
+  }
+
   get ticketInfoChanged(): boolean {
     if (!this.ticket) {
       return false;
@@ -100,6 +114,17 @@ export class MyTicketComponent implements OnInit {
         (this.originalTicketInfo.winner2 ?? '').trim() ||
       this.ticket.top_scorer.trim() !== this.originalTicketInfo.top_scorer.trim()
     );
+  }
+
+  async loadSettings(): Promise<void> {
+    try {
+      this.settings = await firstValueFrom(this.api.getSettings());
+    } catch {
+      this.settings = {
+        show_second_winner: true,
+        winner_info_readonly: false,
+      };
+    }
   }
 
   async saveTicketInfo(): Promise<void> {
@@ -113,6 +138,11 @@ export class MyTicketComponent implements OnInit {
         'Celkový víťaz a najlepší strelec sú povinné pred uložením tiketových predikcií.';
       return;
     }
+    if (!this.canEditWinnerInfo) {
+      this.infoError =
+        'Úprava celkového víťaza a najlepšieho strelca je momentálne uzamknutá administrátorom.';
+      return;
+    }
 
     this.infoError = null;
     this.savingInfo = true;
@@ -122,7 +152,7 @@ export class MyTicketComponent implements OnInit {
       this.ticket = await firstValueFrom(
         this.api.saveTicketInfo({
           winner1,
-          winner2: this.ticket.winner2 ?? null,
+          winner2: this.showSecondWinner ? this.ticket.winner2 ?? null : null,
           top_scorer,
         })
       );

@@ -1,9 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { MainComponent } from './tabs/main/main.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RulesComponent } from './tabs/rules/rules.component';
 import { MyTicketComponent } from './tabs/my-ticket/my-ticket.component';
+import { AdminComponent } from './tabs/admin/admin.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './services/auth.service';
@@ -13,11 +14,12 @@ import { LoginDialogComponent } from './auth/login-dialog.component';
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,
+    CommonModule,
     MainComponent,
     MatTabsModule,
     RulesComponent,
     MyTicketComponent,
+    AdminComponent,
     MatButtonModule,
   ],
   templateUrl: './app.component.html',
@@ -33,7 +35,7 @@ export class AppComponent {
 
   onTabChange(index: number): void {
     this.tabIndex = index;
-    if (index === 0 && this.auth.isLoggedIn()) {
+    if (!this.auth.currentUser()?.is_admin && index === 0 && this.auth.isLoggedIn()) {
       this.myTicket?.loadTicket();
     }
   }

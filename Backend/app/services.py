@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session, joinedload
 
-from app.models import Match, Prediction, Ticket, User
+from app.models import Match, Prediction, Setting, Ticket, User
 from app.scoring import (
     MatchData,
     ScorePrediction,
@@ -76,6 +78,63 @@ def get_open_matches(db: Session) -> list[MatchOut]:
         .all()
     )
     return [match_to_out(m) for m in rows]
+
+
+def get_settings(db: Session) -> Setting:
+    settings = db.query(Setting).first()
+    if not settings:
+        settings = Setting()
+        db.add(settings)
+        db.commit()
+        db.refresh(settings)
+    return settings
+
+
+def save_settings(db: Session, show_second_winner: bool, winner_info_readonly: bool) -> Setting:
+    settings = db.query(Setting).first()
+    if not settings:
+        settings = Setting(
+            show_second_winner=show_second_winner,
+            winner_info_readonly=winner_info_readonly,
+        )
+        db.add(settings)
+    else:
+        settings.show_second_winner = show_second_winner
+        settings.winner_info_readonly = winner_info_readonly
+    db.commit()
+    db.refresh(settings)
+    return settings
+
+
+def add_match(db: Session, match_number: int, home: str, away: str, kickoff_at: datetime | None) -> MatchOut:
+    existing = db.query(Match).filter(Match.match_number == match_number).first()
+    if existing:
+        raise ValueError(f"Match {match_number} already exists")
+
+    match = Match(
+        match_number=match_number,
+        home=home,
+        away=away,
+        kickoff_at=kickoff_at,
+        home_score=None,
+        away_score=None,
+        sort_order=match_number,
+    )
+    db.add(match)
+    db.commit()
+    db.refresh(match)
+    return match_to_out(match)
+
+
+def update_match_result(db: Session, match_number: int, home_score: int, away_score: int) -> MatchOut:
+    match = db.query(Match).filter(Match.match_number == match_number).first()
+    if not match:
+        raise ValueError(f"Match {match_number} not found")
+    match.home_score = home_score
+    match.away_score = away_score
+    db.commit()
+    db.refresh(match)
+    return match_to_out(match)
 
 
 def get_leaderboard(db: Session) -> list[LeaderboardEntry]:

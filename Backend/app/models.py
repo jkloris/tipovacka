@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -13,8 +13,17 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(64), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
     player_name: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
 
     ticket: Mapped["Ticket | None"] = relationship(back_populates="user", uselist=False)
+
+
+class Setting(Base):
+    __tablename__ = "setting"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    show_second_winner: Mapped[bool] = mapped_column(Boolean, default=True)
+    winner_info_readonly: Mapped[bool] = mapped_column(Boolean, default=False)
 
 
 class Match(Base):

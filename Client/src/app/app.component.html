@@ -12,8 +12,13 @@
   [selectedIndex]="tabIndex"
   (selectedIndexChange)="onTabChange($event)"
 >
-  <mat-tab label="Môj tiket">
-    <app-my-ticket></app-my-ticket>
+  <mat-tab label="{{ auth.currentUser()?.is_admin ? 'Admin' : 'Môj tiket' }}">
+    <ng-container *ngIf="auth.currentUser()?.is_admin; else userTicket">
+      <app-admin></app-admin>
+    </ng-container>
+    <ng-template #userTicket>
+      <app-my-ticket></app-my-ticket>
+    </ng-template>
   </mat-tab>
   <mat-tab label="Domov">
     <app-main></app-main>

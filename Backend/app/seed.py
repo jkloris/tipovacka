@@ -3,8 +3,8 @@ from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from app.config import settings
-from app.models import Match, User
+from app.config import  settings
+from app.models import Match, User, Setting
 from app.seed_matches import MATCH_SEEDS
 
 TEST_MATCH_NUMBER = 996
@@ -12,13 +12,14 @@ TEST_MATCH_NUMBER = 996
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 DEFAULT_USERS = [
-    ("ondro", "Ondro"),
-    ("jergi", "Jergi"),
-    ("kubo", "Kubo"),
-    ("tabi", "Tabi"),
-    ("ivo", "Ivo"),
-    ("plcho", "Plcho"),
-    ("mato", "Mato"),
+    ("admin", "Admin", True),
+    ("ondro", "Ondro", False),
+    ("jergi", "Jergi", False),
+    ("kubo", "Kubo", False),
+    ("tabi", "Tabi", False),
+    ("ivo", "Ivo", False),
+    ("plcho", "Plcho", False),
+    ("mato", "Mato", False),
 ]
 
 
@@ -39,14 +40,16 @@ def seed_database(db: Session) -> None:
             )
         )
     password_hash = pwd_context.hash(settings.seed_password)
-    for username, player_name in DEFAULT_USERS:
+    for username, player_name, is_admin in DEFAULT_USERS:
         db.add(
             User(
                 username=username,
                 password_hash=password_hash,
                 player_name=player_name,
+                is_admin=is_admin,
             )
         )
+    db.add(Setting(show_second_winner=False, winner_info_readonly=False))
 
     db.commit()
 

@@ -1,0 +1,78 @@
+<div class="container">
+  <h1>Admin Dashboard</h1>
+
+  <div class="section">
+    <h2>Nastavenia</h2>
+    <mat-checkbox [(ngModel)]="settings.show_second_winner" [ngModelOptions]="{ standalone: true }">
+      Zobraziť druhý tip na víťaza
+    </mat-checkbox>
+    <mat-checkbox [(ngModel)]="settings.winner_info_readonly" [ngModelOptions]="{ standalone: true }">
+      Uzamknúť úpravu víťaza a najlepšieho strelca
+    </mat-checkbox>
+    <button mat-raised-button color="primary" (click)="saveSettings()" [disabled]="savingSettings">
+      {{ savingSettings ? 'Ukladám…' : 'Uložiť nastavenia' }}
+    </button>
+  </div>
+
+  <div class="section">
+    <h2>Pridať nový zápas</h2>
+    <div class="form-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Číslo zápasu</mat-label>
+        <input matInput type="number" [(ngModel)]="newMatch.matchNumber" [ngModelOptions]="{ standalone: true }" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Domáci</mat-label>
+        <input matInput [(ngModel)]="newMatch.home" [ngModelOptions]="{ standalone: true }" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Hostia</mat-label>
+        <input matInput [(ngModel)]="newMatch.away" [ngModelOptions]="{ standalone: true }" />
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Čas výkopu (ISO alebo dátum)</mat-label>
+      <input matInput [(ngModel)]="newMatch.kickoffAt" [ngModelOptions]="{ standalone: true }" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addMatch()" [disabled]="creatingMatch">
+      {{ creatingMatch ? 'Pridávam…' : 'Pridať zápas' }}
+    </button>
+  </div>
+
+  <div class="section">
+    <h2>Aktuálne zápasy</h2>
+    <div class="match-card" *ngFor="let match of matches">
+      <div class="match-header">
+        <div>#{{ match.match_number }} — {{ match.home }} vs {{ match.away }}</div>
+        <div>{{ match.kickoff_at || 'Bez výkopu' }}</div>
+      </div>
+      <div class="form-row">
+        <mat-form-field appearance="fill">
+          <mat-label>Domáce góly</mat-label>
+          <input
+            matInput
+            type="number"
+            min="0"
+            [(ngModel)]="resultInputs[match.match_number].homeScore"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Hostia góly</mat-label>
+          <input
+            matInput
+            type="number"
+            min="0"
+            [(ngModel)]="resultInputs[match.match_number].awayScore"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </mat-form-field>
+        <button mat-mini-button color="primary" (click)="saveMatchResult(match.match_number)" [disabled]="savingMatchResult === match.match_number">
+          {{ savingMatchResult === match.match_number ? 'Ukladám…' : 'Uložiť výsledok' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+</div>

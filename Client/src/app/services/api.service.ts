@@ -8,6 +8,7 @@ import {
   MatchDto,
   MyTicketDto,
   PredictionUpdatePayload,
+  SettingsDto,
   TicketDto,
 } from '../models/api.models';
 
@@ -55,6 +56,45 @@ export class ApiService {
     top_scorer: string;
   }): Observable<MyTicketDto> {
     return this.http.put<MyTicketDto>(`${environment.apiUrl}/tickets/me`, payload);
+  }
+
+  getSettings(): Observable<SettingsDto> {
+    return this.http.get<SettingsDto>(`${environment.apiUrl}/settings`);
+  }
+
+  getAdminSettings(): Observable<SettingsDto> {
+    return this.http.get<SettingsDto>(`${environment.apiUrl}/admin/settings`);
+  }
+
+  updateAdminSettings(payload: SettingsDto): Observable<SettingsDto> {
+    return this.http.put<SettingsDto>(`${environment.apiUrl}/admin/settings`, payload);
+  }
+
+  createMatch(payload: {
+    matchNumber: number;
+    home: string;
+    away: string;
+    kickoffAt: string | null;
+  }): Observable<MatchDto> {
+    return this.http.post<MatchDto>(`${environment.apiUrl}/admin/matches`, {
+      match_number: payload.matchNumber,
+      home: payload.home,
+      away: payload.away,
+      kickoff_at: payload.kickoffAt,
+    });
+  }
+
+  setMatchResult(
+    matchNumber: number,
+    payload: { homeScore: number; awayScore: number }
+  ): Observable<MatchDto> {
+    return this.http.put<MatchDto>(
+      `${environment.apiUrl}/admin/matches/${matchNumber}/result`,
+      {
+        home_score: payload.homeScore,
+        away_score: payload.awayScore,
+      }
+    );
   }
 
   submitTicket(payload: TicketSubmitPayload): Observable<{ ok: boolean; player: string }> {

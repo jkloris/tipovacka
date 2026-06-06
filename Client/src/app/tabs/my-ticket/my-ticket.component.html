@@ -26,18 +26,23 @@
             matInput
             [(ngModel)]="ticket.winner1"
             [ngModelOptions]="{ standalone: true }"
+            [readonly]="winnerInfoReadonly"
             required
           />
         </mat-form-field>
-        <!-- TODO show later -->
-          <!-- <mat-form-field appearance="fill" class="info-field">
-            <mat-label>Celkový víťaz, druhý tip</mat-label>
-            <input
+        <mat-form-field
+          *ngIf="showSecondWinner"
+          appearance="fill"
+          class="info-field"
+        >
+          <mat-label>Celkový víťaz, druhý tip</mat-label>
+          <input
             matInput
             [(ngModel)]="ticket.winner2"
             [ngModelOptions]="{ standalone: true }"
-            />
-          </mat-form-field> -->
+            [readonly]="winnerInfoReadonly"
+          />
+        </mat-form-field>
       </div>
       <div class="ticket-info-row">
         <mat-form-field appearance="fill" class="info-field full-width">
@@ -46,6 +51,7 @@
             matInput
             [(ngModel)]="ticket.top_scorer"
             [ngModelOptions]="{ standalone: true }"
+            [readonly]="winnerInfoReadonly"
             required
           />
         </mat-form-field>

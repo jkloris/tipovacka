@@ -42,4 +42,8 @@ def refresh(body: RefreshRequest, db: Session = Depends(get_db)):
 
 @router.get("/me", response_model=UserOut)
 def me(user: User = Depends(get_current_user)):
-    return UserOut(username=user.username, player_name=user.player_name)
+    return UserOut(
+        username=user.username,
+        player_name=user.player_name,
+        is_admin=user.is_admin,
+    )
