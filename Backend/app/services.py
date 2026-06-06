@@ -146,6 +146,7 @@ def get_leaderboard(db: Session) -> list[LeaderboardEntry]:
         db.query(User)
         .options(joinedload(User.ticket).joinedload(Ticket.predictions).joinedload(Prediction.match))
         .filter(User.player_name.isnot(None))
+        .filter(User.is_admin.is_(False))
         .all()
     )
 
@@ -336,3 +337,13 @@ def upsert_prediction(
         filled=True,
         editable=is_prediction_editable(match.kickoff_at),
     )
+
+
+def delete_match(db: Session, match_number: int) -> None:
+    match = db.query(Match).filter(Match.match_number == match_number).first()
+    if not match:
+        raise ValueError(f"Match {match_number} not found")
+    # delete any predictions referencing this match
+    db.query(Prediction).filter(Prediction.match_id == match.id).delete(synchronize_session=False)
+    db.delete(match)
+    db.commit()

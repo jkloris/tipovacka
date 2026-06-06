@@ -11,6 +11,7 @@ from app.schemas import (
     SettingsUpdate,
 )
 from app.services import add_match, get_settings, save_settings, update_match_result
+from app.services import delete_match
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -61,5 +62,18 @@ def set_match_result(
 ):
     try:
         return update_match_result(db, match_number, body.home_score, body.away_score)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.delete("/matches/{match_number}")
+def remove_match(
+    match_number: int,
+    user=Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        delete_match(db, match_number)
+        return {"ok": True}
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc

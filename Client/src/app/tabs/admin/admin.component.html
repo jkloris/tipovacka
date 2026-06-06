@@ -72,6 +72,9 @@
       <div class="match-header">
         <div>#{{ match.match_number }} — {{ match.home }} vs {{ match.away }}</div>
         <div>{{ match.kickoff_at || 'Bez výkopu' }}</div>
+        <button mat-icon-button color="warn" (click)="deleteMatch(match.match_number)" aria-label="Odstrániť zápas">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
       <div class="form-row">
         <mat-form-field appearance="fill">

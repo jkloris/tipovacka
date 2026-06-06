@@ -47,11 +47,10 @@ def get_winner(match: MatchData) -> int:
 def calc_points_for_match(match: MatchData, prediction: ScorePrediction | None) -> int:
     if prediction is None or not match_is_played(match):
         return 0
-    points = 0
-    points += 5 - (
+    points =  max(0, 5 - (
         abs(prediction.home_score - match.home_score)
         + abs(prediction.away_score - match.away_score)
-    )
+    ))
     points += (
         5
         if get_winner(match)
@@ -62,8 +61,9 @@ def calc_points_for_match(match: MatchData, prediction: ScorePrediction | None) 
 
 
 def add_winner_points(player_name: str, points: int) -> int:
-    if player_name in ("Ondro", "Ivo"):
-        return points + 10
+    return points
+    # if player_name in ("Ondro", "Ivo"):
+    #     return points + 10
     return points
 
 

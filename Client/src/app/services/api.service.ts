@@ -97,6 +97,10 @@ export class ApiService {
     );
   }
 
+  deleteMatch(matchNumber: number): Observable<{ ok: boolean }> {
+    return this.http.delete<{ ok: boolean }>(`${environment.apiUrl}/admin/matches/${matchNumber}`);
+  }
+
   submitTicket(payload: TicketSubmitPayload): Observable<{ ok: boolean; player: string }> {
     return this.http.post<{ ok: boolean; player: string }>(
       `${environment.apiUrl}/tickets`,

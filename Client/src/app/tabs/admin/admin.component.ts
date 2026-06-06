@@ -128,6 +128,19 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  async deleteMatch(matchNumber: number): Promise<void> {
+    if (!confirm(`Naozaj odstrániť zápas ${matchNumber}?`)) {
+      return;
+    }
+    this.error = null;
+    try {
+      await firstValueFrom(this.api.deleteMatch(matchNumber));
+      await this.loadMatches();
+    } catch {
+      this.error = `Nepodarilo sa odstrániť zápas ${matchNumber}.`;
+    }
+  }
+
   async addMatch(): Promise<void> {
     if (!this.newMatch.matchNumber || !this.newMatch.home || !this.newMatch.away) {
       this.error = 'Zadajte číslo zápasu, domácich aj hostí.';
