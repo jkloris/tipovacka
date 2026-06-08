@@ -11,7 +11,6 @@ docker compose up --build
 - App: http://localhost:8080
 - API: http://localhost:8000/api
 
-Default logins (password from `SEED_PASSWORD`, default `tipovacka`): `ondro`, `jergi`, `kubo`, `tabi`, `ivo`, `plcho`, `mato`.
 
 ## Local development
 

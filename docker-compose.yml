@@ -5,15 +5,17 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: sqlite:////data/tipovacka.db
-      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
+      JWT_SECRET: ${JWT_SECRET:-dev-dadwiduasdow8dawa9diwdapawn}
       CORS_ORIGINS: http://localhost:8080,http://localhost:4200
       SEED_PASSWORD: ${SEED_PASSWORD:-tipovacka}
     volumes:
       - ./data:/data
+    restart: on-failure
 
   client:
     build: ./Client
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
       - api
+    restart: on-failure

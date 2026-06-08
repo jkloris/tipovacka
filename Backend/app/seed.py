@@ -13,8 +13,6 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 DEFAULT_USERS = [
     ("admin", True),
-    ("ondro", False),
-    ("jergi", False),
 ]
 
 
